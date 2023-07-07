@@ -8,9 +8,6 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-
-
-
     ];
 
 
@@ -75,13 +72,13 @@
   # services.xserver.windowManager.openbox.enable = true; 
 
   #herbstluftwm
-  services.xserver.windowManager.herbstluftwm.enable = true;
+  #services.xserver.windowManager.herbstluftwm.enable = true;
 
 
  #hyprland 
 
-   # programs.hyprland.package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-   # programs.hyprland.xwayland.hidpi = true;
+#   programs.hyprland.package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+  # programs.hyprland.xwayland.hidpi = true;
 
 #
   # hyperland
@@ -115,7 +112,7 @@
        configFile = super.writeText "config.h" (builtins.readFile /home/mark/config.def.h);
        postPatch = oldAttrs.postPatch or "" + "\necho 'Using own config file...'\n cp ${configFile} config.def.h";
   });
-    })
+   })
 #waybar experimental patch
 #	   (self: super: {
 #	     waybar = super.waybar.overrideAttrs (oldAttrs: {
@@ -303,7 +300,7 @@
 
 
 #e16
-  services.xserver.windowManager.e16.enable = true;
+#  services.xserver.windowManager.e16.enable = true;
 
 
   #virt-manager config

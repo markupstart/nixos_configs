@@ -108,6 +108,7 @@
 #    eww-wayland
     neovim
     pinentry   
+    font-awesome
 
   ];
 
@@ -162,7 +163,7 @@
     };
 
     theme = {
-      name = "BlackMATE";
+      name = "HighContrastInverse";
       package = pkgs.mate.mate-themes;
     };
 
