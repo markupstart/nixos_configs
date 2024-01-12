@@ -45,6 +45,10 @@
   };
  };
 
+services.xserver.excludePackages = with pkgs; [
+  org.xf86inputjoystick
+];
+
   #Enable networking
   networking.networkmanager.enable = true;
 
