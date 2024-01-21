@@ -148,6 +148,7 @@
     swaylock
     gpu-screen-recorder-gtk
     okular
+    bibata-cursors
    ];
 
   #enable eza
@@ -205,9 +206,16 @@
     };
        font.name = "Roboto-Black 10";
     cursorTheme = {
-       name = "Catppuccin-Macchiato-Peach-Cursors";
-       package = pkgs.catppuccin-cursors;
+       name = "Bibata-Modern-Amber";
+       package = pkgs.bibata-cursors;
          };
+    gtk3.extraConfig = {
+      gtk-xft-antialias = 1;
+      gtk-xft-hinting = 1;
+      gtk-xft-hintstyle = "hintfull";
+      gtk-xft-rgba = "rgb";
+      gtk-cursor-theme-name = "Bibata-Modern-Amber";
+        };
        };
 
   # Let home Manager install and manage itself.
