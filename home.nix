@@ -51,22 +51,19 @@
     tree
     gawk
     zstd
-    gnupg
     jq
     socat
+    
     # nix related
     nix-output-monitor
     nitch
     inxi
-    glxinfo
-    nvd
-
+    
     #productivity
     glow # markdown previewer in terminal
     btop
     iftop # network monitoring
-    lxappearance
-
+    
     #system call monitoring
     strace # system call monitoring
     ltrace # library call monitoring
@@ -79,6 +76,8 @@
     usbutils # lsusb
     nixos-generators
     killall
+
+    #my software for user
     roboto
     mate.mate-themes
     mate.mate-icon-theme
@@ -87,19 +86,71 @@
     font-awesome
     mate.engrampa
     qalculate-gtk
-    ripgrep
-    findutils
-    xclip
     fish
-    polybar 
     thunderbird
     cinnamon.mint-y-icons
     cinnamon.mint-themes
     numix-cursor-theme
-    toolbox
+    distrobox
     dconf
-  ];
+    firefox
+    lutris
+    gimp-with-plugins 
+    polkit
+    lxde.lxsession
+    neofetch
+    gnome.adwaita-icon-theme
+    feh
+    xfce.thunar-archive-plugin
+    wineWowPackages.full
+    winetricks
+    scribus
+    inkscape
+    extremetuxracer
+    superTuxKart
+    superTux
+    makemkv
+    gamescope
+    mangohud
+    gamemode
+    pulsemixer
+    discord
+    obs-studio
+    obs-studio-plugins.wlrobs
+    obs-studio-plugins.obs-vaapi
+    obs-studio-plugins.obs-vkcapture
+    obs-studio-plugins.obs-gstreamer
+    obs-studio-plugins.obs-pipewire-audio-capture
+    htop
+    btop
+    fuzzel
+    nwg-look
+    xfce.mousepad
+    xfce.thunar-archive-plugin
+    darktable
+    gnome.adwaita-icon-theme
+    font-awesome
+    grc
+    lxqt.lxqt-sudo
+    libreoffice-fresh  
+    flameshot
+    razergenie
+    alacritty
+    polychromatic
+    libsForQt5.kdenlive
+    cups-brother-hll2340dw
+    pw-volume
+    copyq
+    waybar
+    hyprpaper
+    dunst
+    swayidle
+    swaylock
+    gpu-screen-recorder-gtk
+    okular
+   ];
 
+  #enable eza
   programs.eza.enable = true;
 
   #starship - an customizable prompt for any shell
@@ -136,8 +187,7 @@
    programs.alacritty = {
      enable = true;
      settings = {
-       font.size = 10;
-       font.theme = pkgs.terminus_font;   
+       font.size = 11;
     };
   };
 
@@ -159,7 +209,10 @@
        package = pkgs.catppuccin-cursors;
          };
        };
-  
+
+  # Let home Manager install and manage itself.
+  programs.home-manager.enable = true;
+
   # This value determines the home Manager release that your
   # configuration is compatible with. This helps avoid breakage
   # when a new home Manager release introduces backwards
@@ -168,8 +221,5 @@
   # You can update home Manager without changing this value. See
   # the home Manager release notes for a list of state version
   # changes in each release.
-  home.stateVersion = "23.11";
-
-  # Let home Manager install and manage itself.
-  programs.home-manager.enable = true;
+  home.stateVersion = "22.11";
 }
