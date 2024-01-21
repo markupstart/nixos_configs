@@ -150,6 +150,10 @@
     okular
     bibata-cursors
     grim
+    vulkan-tools
+    blender-hip
+    virt-manager
+    ffmpeg
    ];
 
   #enable eza
@@ -190,6 +194,7 @@
      enable = true;
      settings = {
        font.size = 11;
+     shell = "/etc/profiles/per-user/mark/bin/fish";
     };
   };
 

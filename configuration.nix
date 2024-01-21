@@ -27,7 +27,7 @@
       };
     };
 
-  #Kernel to Boot
+  #Kernel to Boot  
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
   #AMDGPU
@@ -39,6 +39,7 @@
   "fs.file-max" = 524288;
 };  
   
+  #network host name
   networking.hostName = "nixos"; 
 
  #Enable xserver
@@ -56,10 +57,10 @@
   #Enable networking
   networking.networkmanager.enable = true;
 
-  # Set your time zone.
+  #time zone
   time.timeZone = "America/Indiana/Indianapolis";
 
-  # Select internationalisation properties.
+  # internationalisation
   i18n.defaultLocale = "en_US.UTF-8";
   i18n.extraLocaleSettings = {
     LC_ADDRESS = "en_US.UTF-8";
@@ -79,6 +80,9 @@
 
   #Enable Hyprland
   programs.hyprland.enable = true;
+
+#  XFCE4 enable
+#  services.xserver.desktopManager.xfce.enable = true;
 
   #XDG Portals enable with gtk and hyprland 
   xdg.portal = {
@@ -118,13 +122,14 @@
     # no need to redefine it in your config for now)
     };
 
-  #Define a user account. Don't forget to set a password with ‘passwd’.
+  #user account
   users.users.mark = {
     isNormalUser = true;
     description = "mark";
     extraGroups = [ "networkmanager" "wheel" "audio" "video" "disk" "libvirtd" ];
   };
 
+  #thunar with plugins
   programs.xfconf.enable = true;
   programs.thunar.enable = true;
   programs.thunar.plugins = with pkgs.xfce; [
@@ -141,7 +146,7 @@
   hardware.openrazer.enable = true;
   hardware.openrazer.users = [ "mark" ];
   
-  #List packages installed in system profile. To search, run:
+  #star citizen easy install
   environment.systemPackages = with pkgs; [  
     inputs.nix-gaming.packages.${system}.star-citizen 
   ];
@@ -155,7 +160,7 @@
  
   #Enable Virt-Manager 
   virtualisation.libvirtd.enable = true;
-  #programs.virt-manager.enable = true;
+  programs.virt-manager.enable = true;
   
   #steam
   programs.steam = {
@@ -166,16 +171,18 @@
   
   #Enable OpenGL
   hardware.opengl.extraPackages = with pkgs; [
-   rocmPackages.clr.icd
+  rocmPackages.clr.icd
+  #mesa.opencl   
 ];
+
    hardware.opengl.driSupport = true; # This is already enabled by default
    hardware.opengl.driSupport32Bit = true; # For 32 bit applications
 
    #HIP corrections
    systemd.tmpfiles.rules = [
        "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.rocmPackages.clr}"
-   ];
-
+    ];
+   
     #Auto upgrades
     system.autoUpgrade.enable = true;
     system.autoUpgrade.allowReboot = true;
