@@ -149,6 +149,7 @@
     gpu-screen-recorder-gtk
     okular
     bibata-cursors
+    grim
    ];
 
   #enable eza
