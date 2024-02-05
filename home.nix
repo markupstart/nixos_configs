@@ -76,8 +76,11 @@
     usbutils # lsusb
     nixos-generators
     killall
+    glxinfo
 
     #my software for user
+    adwaita-qt
+    adwaita-qt6
     roboto
     mate.mate-themes
     mate.mate-icon-theme
@@ -138,14 +141,12 @@
     alacritty
     polychromatic
     libsForQt5.kdenlive
-    cups-brother-hll2340dw
+    glaxnimate
     pw-volume
     copyq
     waybar
     hyprpaper
     dunst
-    swayidle
-    swaylock
     gpu-screen-recorder-gtk
     okular
     bibata-cursors
@@ -154,7 +155,14 @@
     blender-hip
     virt-manager
     ffmpeg
-   ];
+    rofi
+    system-config-printer
+    cups-brother-hll2340dw
+    foomatic-db
+    transmission-gtk
+    cups-filters
+    brlaser
+    ];
 
   #enable eza
   programs.eza.enable = true;
@@ -184,6 +192,7 @@
       export locale=en_US.UTF-8
       export PATH="/home/mark/.nix-profile/bin:$PATH"
       export PATH="/home/mark/.local/bin:$PATH"
+      export PATH="/home/mark/.local/share/applications:$PATH"
       export PATH="/home/mark/.local/discord:$PATH"
       export TERMINAL=alacritty
     ''; 

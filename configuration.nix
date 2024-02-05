@@ -81,8 +81,7 @@
   #Enable Hyprland
   programs.hyprland.enable = true;
 
-#  XFCE4 enable
-#  services.xserver.desktopManager.xfce.enable = true;
+  services.xserver.windowManager.dwm.enable = true;
 
   #XDG Portals enable with gtk and hyprland 
   xdg.portal = {
@@ -148,15 +147,15 @@
   
   #star citizen easy install
   environment.systemPackages = with pkgs; [  
-    inputs.nix-gaming.packages.${system}.star-citizen 
+    inputs.nix-citizen.packages.${system}.star-citizen 
   ];
   
   #DWM - Personal Config and setup
- # nixpkgs.overlays = [
- #	(final: prev: {
- #		dwm = prev.dwm.overrideAttrs (old: { src = /home/mark/dwm-6.4 ;});
- #	})
- # ];
+  nixpkgs.overlays = [
+ 	(final: prev: {
+ 		dwm = prev.dwm.overrideAttrs (old: { src = /home/mark/dwm-6.4 ;});
+ 	})
+  ];
  
   #Enable Virt-Manager 
   virtualisation.libvirtd.enable = true;
@@ -172,7 +171,7 @@
   #Enable OpenGL
   hardware.opengl.extraPackages = with pkgs; [
   rocmPackages.clr.icd
-  #mesa.opencl   
+  mesa.opencl   
 ];
 
    hardware.opengl.driSupport = true; # This is already enabled by default
