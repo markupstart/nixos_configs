@@ -28,7 +28,8 @@
     };
 
   #Kernel to Boot  
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  #boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackages_zen;
 
   #AMDGPU
   boot.initrd.kernelModules = [ "amdgpu" ];
@@ -181,7 +182,7 @@
    systemd.tmpfiles.rules = [
        "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.rocmPackages.clr}"
     ];
-   
+  
     #Auto upgrades
     system.autoUpgrade.enable = true;
     system.autoUpgrade.allowReboot = true;
