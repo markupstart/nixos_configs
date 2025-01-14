@@ -139,13 +139,6 @@
   
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
-
-  #DWM - Personal Config and setup
-  nixpkgs.overlays = [
- 	(final: prev: {
- 		dwm = prev.dwm.overrideAttrs (old: { src = /home/mark/dwm-6.4 ;});
- 	})
-  ];
  
   #Enable Virt-Manager 
   virtualisation.libvirtd.enable = true;
