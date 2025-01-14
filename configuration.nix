@@ -28,8 +28,8 @@
     };
 
   #Kernel to Boot  
-  #boot.kernelPackages = pkgs.linuxPackages_latest;
-  boot.kernelPackages = pkgs.linuxPackages_zen;
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+ #boot.kernelPackages = pkgs.linuxPackages_zen;
 
   #AMDGPU
   boot.initrd.kernelModules = [ "amdgpu" ];
@@ -79,23 +79,21 @@
   #DBUS
   services.dbus.enable = true;
 
-  #Enable Hyprland
-  programs.hyprland.enable = true;
+  #Enable Niri
+ programs.niri.enable = true;
 
-  services.xserver.windowManager.dwm.enable = true;
-
-  #XDG Portals enable with gtk and hyprland 
+  #XDG Portals enable with gtk and niri 
   xdg.portal = {
     enable = true;
     extraPortals = [
       pkgs.xdg-desktop-portal-gtk
-      pkgs.xdg-desktop-portal-hyprland
+      pkgs.xdg-desktop-portal-gnome
     ];
     config.common.default = "*";
   };
 
   #Enable SDDM
-   services.xserver.displayManager.sddm.enable = true;
+   services.xserver.displayManager.gdm.enable = true;
 
   # Configure keymap in X11
   services.xserver = {  
@@ -142,15 +140,6 @@
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  #openrazer enable and configs
-  hardware.openrazer.enable = true;
-  hardware.openrazer.users = [ "mark" ];
-  
-  #star citizen easy install
-  environment.systemPackages = with pkgs; [  
-    inputs.nix-citizen.packages.${system}.star-citizen 
-  ];
-  
   #DWM - Personal Config and setup
   nixpkgs.overlays = [
  	(final: prev: {
@@ -188,5 +177,5 @@
     system.autoUpgrade.allowReboot = true;
 
     #NIXOS Version Number
-    system.stateVersion = "22.11";
+    system.stateVersion = "23.11";
  }
