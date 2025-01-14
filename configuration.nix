@@ -62,7 +62,7 @@ programs.nix-ld.enable = true;
   networking.networkmanager.enable = true;
 
   #time zone
-  time.timeZone = "America/Indiana/Indianapolis";
+  time.timeZone = "America/New_York";
 
   # internationalisation
   i18n.defaultLocale = "en_US.UTF-8";

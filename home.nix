@@ -42,6 +42,8 @@
     alpaca
     ollama-rocm
     starship
+    flatpak
+    rssguard
 
     #utils
     ripgrep # recursively searches directories for a regex pattern
@@ -198,6 +200,8 @@
       export PATH="/home/mark/.local/bin:$PATH"
       export PATH="/home/mark/.local/share/applications:$PATH"
       export PATH="/home/mark/.local/discord:$PATH"
+      export PATH="/var/lib/flatpak/exports/share:$PATH"
+      export PATH="/home/mark/.local/share/flatpak/exports/share:$PATH"
       export TERMINAL=alacritty
     ''; 
 };
