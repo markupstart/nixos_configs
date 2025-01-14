@@ -151,7 +151,6 @@
     lxqt.lxqt-sudo
     libreoffice-fresh  
     ghostty
-    polychromatic
     libsForQt5.kdenlive
     glaxnimate
     pw-volume
