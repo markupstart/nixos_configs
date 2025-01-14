@@ -39,6 +39,9 @@
     cabextract
     zenity
     alacritty
+    alpaca
+    ollama-rocm
+    starship
 
     #utils
     ripgrep # recursively searches directories for a regex pattern
@@ -180,18 +183,7 @@
   #enable eza
   programs.eza.enable = true;
 
-  #starship - an customizable prompt for any shell
-  programs.starship = {
-    enable = true;
-    settings = {
-      add_newline = false;
-      aws.disabled = true;
-      gcloud.disabled = true;
-      line_break.disabled = true;
-    };
-  };
-
-   programs.bash = {
+  programs.bash = {
     enable = true;
     enableCompletion = true;
     shellAliases = {
