@@ -2,15 +2,9 @@
   description = "NixOS configuration of Mark Hall";
   
 inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nix-community/home-manager/release-23.11";
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-    nix-citizen.url = "github:LovingMelody/nix-citizen";
-
-        # Optional - updates underlying without waiting for nix-citizen to update
-        nix-gaming.url = "github:fufexan/nix-gaming";
-	nix-citizen.inputs.nix-gaming.follows = "nix-gaming";
-	
   };  
 
    outputs = {self,nixpkgs,home-manager,... }@inputs: {
