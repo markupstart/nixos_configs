@@ -43,19 +43,22 @@
   #network host name
   networking.hostName = "nixos"; 
 
+  virtualisation.containers.enable = true;
+
+ services.udev.extraRules = ''
+    KERNEL=="hidraw*", ATTRS{idVendor}=="231d", ATTRS{idProduct}=="*", MODE="0660", TAG+="uaccess"
+  '';
+
  #Enable xserver
  services.xserver  = {
    enable = true;
-   videoDrivers = [ "amdgpu" ];
-   libinput = {
-     enable = false;
-   };
-   synaptics = {
-     enable = true; 
-  };
+   videoDrivers = [ "amdgpu" ];   
  };
 
+programs.nix-ld.enable = true;
+
   #Enable networking
+
   networking.networkmanager.enable = true;
 
   #time zone
@@ -96,9 +99,9 @@
    services.xserver.displayManager.gdm.enable = true;
 
   # Configure keymap in X11
-  services.xserver = {  
+  services.xserver.xkb = {  
     layout = "us";
-    xkbVariant = "";
+    variant = "";
   };
 
   #POLKIT Authentication
@@ -108,13 +111,10 @@
   services.printing.enable = true;
 
   #Enable sound with pipewire.
-  sound.enable = true;
   hardware.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
     pulse.enable = true;
     # use the example session manager (no others are packaged yet so this is enabled by default,
     # no need to redefine it in your config for now)
@@ -152,18 +152,22 @@
 };
   
   #Enable OpenGL
-  hardware.opengl.extraPackages = with pkgs; [
+  hardware.graphics.extraPackages = with pkgs; [
   rocmPackages.clr.icd
   mesa.opencl   
 ];
 
-   hardware.opengl.driSupport = true; # This is already enabled by default
-   hardware.opengl.driSupport32Bit = true; # For 32 bit applications
+    hardware.graphics.enable32Bit = true; # For 32 bit applications
 
    #HIP corrections
    systemd.tmpfiles.rules = [
        "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.rocmPackages.clr}"
     ];
+
+    nix.settings = {
+    substituters = ["https://nix-gaming.cachix.org"];
+    trusted-public-keys = ["nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="];
+  };
   
     #Auto upgrades
     system.autoUpgrade.enable = true;

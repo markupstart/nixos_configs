@@ -2,7 +2,7 @@
 {
   home.username = "mark";
   home.homeDirectory = "/home/mark";
-
+  home.enableNixpkgsReleaseCheck = false;
   #set cursor size and dpi for 4k monitor
   xresources.properties = {
     "Xcursor.size" = 16;
@@ -36,10 +36,15 @@
     xz
     unzip
     p7zip
+    cabextract
+    zenity
+    alacritty
 
     #utils
     ripgrep # recursively searches directories for a regex pattern
     fzf # A command-line fuzzy finder
+    atuin
+    zoxide
 
     #networking tools
     nmap # A utility for network discovery and security auditing
@@ -63,6 +68,10 @@
     glow # markdown previewer in terminal
     btop
     iftop # network monitoring
+    clapper
+    spotify
+    mission-center  
+    nextcloud-client
     
     #system call monitoring
     strace # system call monitoring
@@ -77,6 +86,7 @@
     nixos-generators
     killall
     glxinfo
+    kdePackages.polkit-kde-agent-1
 
     #my software for user
     adwaita-qt
@@ -91,10 +101,13 @@
     qalculate-gtk
     fish
     thunderbird
-    cinnamon.mint-y-icons
-    cinnamon.mint-themes
+    mint-y-icons
+    mint-themes
     numix-cursor-theme
     distrobox
+    podman
+    boxbuddy
+    vscode
     dconf
     firefox
     lutris
@@ -102,9 +115,8 @@
     polkit
     lxde.lxsession
     fastfetch
-    gnome.adwaita-icon-theme
+    adwaita-icon-theme
     xfce.thunar-archive-plugin
-    wine
     winetricks
     scribus
     inkscape
@@ -130,7 +142,7 @@
     xfce.mousepad
     xfce.thunar-archive-plugin
     darktable
-    gnome.adwaita-icon-theme
+    adwaita-icon-theme
     font-awesome
     grc
     lxqt.lxqt-sudo
@@ -159,9 +171,10 @@
     system-config-printer
     cups-brother-hll2340dw
     foomatic-db
-    transmission-gtk
+    transmission_4-gtk
     cups-filters
     brlaser
+
     ];
 
   #enable eza
