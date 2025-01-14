@@ -101,11 +101,10 @@
     gimp-with-plugins 
     polkit
     lxde.lxsession
-    neofetch
+    fastfetch
     gnome.adwaita-icon-theme
-    feh
     xfce.thunar-archive-plugin
-    wineWowPackages.full
+    wine
     winetricks
     scribus
     inkscape
@@ -136,26 +135,27 @@
     grc
     lxqt.lxqt-sudo
     libreoffice-fresh  
-    flameshot
-    razergenie
-    alacritty
+    ghostty
     polychromatic
     libsForQt5.kdenlive
     glaxnimate
     pw-volume
     copyq
     waybar
-    hyprpaper
-    dunst
+    swaybg
+    swayidle
+    swaylock
+    swayosd
+    xwayland-satellite
+    mako
     gpu-screen-recorder-gtk
-    okular
+    papers
     bibata-cursors
     grim
     vulkan-tools
     blender-hip
     virt-manager
     ffmpeg
-    rofi
     system-config-printer
     cups-brother-hll2340dw
     foomatic-db
@@ -198,15 +198,6 @@
     ''; 
 };
  
-   #Alacritty
-   programs.alacritty = {
-     enable = true;
-     settings = {
-       font.size = 11;
-     shell = "/etc/profiles/per-user/mark/bin/fish";
-    };
-  };
-
     #gtk fonts and themes
     gtk = {
     enable = true;
@@ -244,5 +235,5 @@
   # You can update home Manager without changing this value. See
   # the home Manager release notes for a list of state version
   # changes in each release.
-  home.stateVersion = "22.11";
+  home.stateVersion = "24.11";
 }
