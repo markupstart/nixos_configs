@@ -158,6 +158,7 @@
     pw-volume
     copyq
     waybar
+    gnome-keyring
     swaybg
     swayidle
     swaylock
