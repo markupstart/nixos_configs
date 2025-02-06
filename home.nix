@@ -153,6 +153,7 @@
     lxqt.lxqt-sudo
     libreoffice-fresh  
     ghostty
+    foot
     libsForQt5.kdenlive
     glaxnimate
     pw-volume
