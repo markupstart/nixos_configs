@@ -142,7 +142,7 @@
     obs-studio-plugins.obs-pipewire-audio-capture
     htop
     btop
-    fuzzel
+    wofi
     nwg-look
     xfce.mousepad
     xfce.thunar-archive-plugin
@@ -158,6 +158,7 @@
     pw-volume
     copyq
     waybar
+    mate-polkit
     gnome-keyring
     swaybg
     swayidle
