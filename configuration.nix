@@ -174,5 +174,5 @@ programs.nix-ld.enable = true;
     system.autoUpgrade.allowReboot = true;
 
     #NIXOS Version Number
-    system.stateVersion = "24.11";
+    system.stateVersion = "25.05";
  }
