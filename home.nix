@@ -3,11 +3,6 @@
   home.username = "mark";
   home.homeDirectory = "/home/mark";
   home.enableNixpkgsReleaseCheck = false;
-  #set cursor size and dpi for 4k monitor
-  xresources.properties = {
-    "Xcursor.size" = 16;
-    "Xft.dpi" = 110;
-  };
 
   #basic configuration of git, please change to your own
   programs.git = {
@@ -190,55 +185,7 @@
 
   #enable eza
   programs.eza.enable = true;
-
-  programs.bash = {
-    enable = true;
-    enableCompletion = true;
-    shellAliases = {
-    "ls" = "eza --icons -F -H --group-directories-first --git -1";
-    "la" = "eza --icons -F -H -a --group-directories-first --git -1";
-    "ll" = "eza --icons -F -H -a -l --group-directories-first --git";
-};
-    bashrcExtra = ''
-      export LOCALE_ARCHIVE="/run/current-system/sw/lib/locale/locale-archive"
-      export LC_All=All
-      export locale=en_US.UTF-8
-      export PATH="/home/mark/.nix-profile/bin:$PATH"
-      export PATH="/home/mark/.local/bin:$PATH"
-      export PATH="/home/mark/.local/share/applications:$PATH"
-      export PATH="/home/mark/.local/discord:$PATH"
-      export PATH="/var/lib/flatpak/exports/share:$PATH"
-      export PATH="/home/mark/.local/share/flatpak/exports/share:$PATH"
-      export TERMINAL=alacritty
-    ''; 
-};
  
-    #gtk fonts and themes
-    gtk = {
-    enable = true;
-    iconTheme = {
-    name = "Mint-Y-Orange";
-    package = pkgs.mate.mate-icon-theme;
-    };
-
-    theme = {
-    name = "Mint-Y-Dark-Orange";
-    package = pkgs.mate.mate-themes;
-    };
-       font.name = "Roboto-Black 10";
-    cursorTheme = {
-       name = "Bibata-Modern-Amber";
-       package = pkgs.bibata-cursors;
-         };
-    gtk3.extraConfig = {
-      gtk-xft-antialias = 1;
-      gtk-xft-hinting = 1;
-      gtk-xft-hintstyle = "hintfull";
-      gtk-xft-rgba = "rgb";
-      gtk-cursor-theme-name = "Bibata-Modern-Amber";
-        };
-       };
-
   # Let home Manager install and manage itself.
   programs.home-manager.enable = true;
 
