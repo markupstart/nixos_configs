@@ -63,6 +63,7 @@
     zstd
     jq
     socat
+    mission-center
     
     # nix related
     nix-output-monitor
@@ -159,7 +160,7 @@
     pw-volume
     copyq
     waybar
-    mate-polkit
+    mate.mate-polkit
     gnome-keyring
     swaybg
     swayidle
