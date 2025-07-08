@@ -146,6 +146,7 @@
     btop
     wofi
     nwg-look
+    power-profiles-daemon
     xfce.mousepad
     xfce.thunar-archive-plugin
     darktable
@@ -162,6 +163,7 @@
     copyq
     waybar
     mate.mate-polkit
+    nordzy-cursor-theme
     gnome-keyring
     swaybg
     swayidle
