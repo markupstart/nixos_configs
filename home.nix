@@ -164,6 +164,7 @@
     swayidle
     swaylock
     swayosd
+    wallust
     xwayland-satellite
     mako
     gpu-screen-recorder-gtk
