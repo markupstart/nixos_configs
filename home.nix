@@ -119,6 +119,7 @@
     lutris
     gimp-with-plugins 
     polkit
+    polkit_gnome
     lxde.lxsession
     fastfetch
     adwaita-icon-theme
