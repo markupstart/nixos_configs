@@ -61,6 +61,7 @@
     tree
     gawk
     zstd
+    numix-cursor-theme
     jq
     socat
     mission-center
