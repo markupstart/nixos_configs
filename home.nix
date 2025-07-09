@@ -27,6 +27,9 @@
   # Packages that should be installed to the user profile.
     home.packages = with pkgs; [
     #archives
+	inotify-tools
+	swayimg
+	swappy
     pamixer
     pavucontrol
 	gnome-weather
