@@ -27,7 +27,23 @@
   # Packages that should be installed to the user profile.
     home.packages = with pkgs; [
     #archives
+    pamixer
+    pavucontrol
+	gnome-weather
+	bazecor
+	davinci-resolve-studio
     zip
+    audacity
+    audacious
+    handbrake
+    gnome-boxes
+    nautilus
+    mpd
+    rmpc
+    cava
+    dconf-editor
+	trash-cli
+    libnotify
     xz
     unzip
     p7zip
@@ -36,9 +52,15 @@
     alacritty
     alpaca
     ollama-rocm
+	glib
     starship
     flatpak
     rssguard
+    micro
+    kitty
+    xdg-desktop-portal-gnome
+    xdg-desktop-portal-gtk
+    swww
 
     #utils
     ripgrep # recursively searches directories for a regex pattern
@@ -112,7 +134,6 @@
     dconf
     firefox
     lutris
-    gimp-with-plugins 
     polkit
     polkit_gnome
     lxde.lxsession
@@ -181,7 +202,9 @@
     transmission_4-gtk
     cups-filters
     brlaser
-
+    cups-brother-hl2260d
+    cups-brother-hl1210w
+    
     ];
 
   #enable eza

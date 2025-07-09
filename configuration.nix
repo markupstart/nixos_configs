@@ -49,6 +49,9 @@
     KERNEL=="hidraw*", ATTRS{idVendor}=="231d", ATTRS{idProduct}=="*", MODE="0660", TAG+="uaccess"
   '';
 
+services.udev.enable  = true;
+services.flatpak.enable = true;
+virtualisation.docker.enable = true;
  #Enable xserver
  services.xserver  = {
    enable = true;
@@ -92,7 +95,16 @@ programs.nix-ld.enable = true;
       pkgs.xdg-desktop-portal-gtk
       pkgs.xdg-desktop-portal-gnome
     ];
-    config.common.default = "*";
+    config = {
+       # Define preferred portals for specific interfaces (optional)
+       # gnome = {
+       #   default = [ "gnome" "gtk" ]; # Example: Set the default for GNOME to use gnome and then gtk
+       #   "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ]; # Example: Use gnome-keyring for secret storage
+       # };
+       common = {
+         default = [ "gnome" ]; # Example: Set a fallback default for all desktops
+        };
+     };
   };
 
   #Enable SDDM
@@ -124,7 +136,7 @@ programs.nix-ld.enable = true;
   users.users.mark = {
     isNormalUser = true;
     description = "mark";
-    extraGroups = [ "networkmanager" "wheel" "audio" "video" "disk" "libvirtd" ];
+    extraGroups = [ "networkmanager" "wheel" "audio" "video" "disk" "libvirtd" "docker" "dialout" ];
   };
 
   #thunar with plugins
