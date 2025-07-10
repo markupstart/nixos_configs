@@ -27,6 +27,11 @@
   # Packages that should be installed to the user profile.
     home.packages = with pkgs; [
     #archives
+	v4l-utils
+	catimg
+	chafa
+	ripdrag
+	yazi
 	inotify-tools
 	swayimg
 	swappy

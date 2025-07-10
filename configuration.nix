@@ -4,7 +4,6 @@
 
 { inputs, config, pkgs,... }:
 
-
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -32,8 +31,9 @@
  #boot.kernelPackages = pkgs.linuxPackages_zen;
 
   #AMDGPU
-  boot.initrd.kernelModules = [ "amdgpu" ];
-
+  boot.initrd.kernelModules = [ "amdgpu" "v4l2loopback" ];
+  boot.extraModulePackages = [ pkgs.linuxPackages_latest.v4l2loopback ];
+  
   #Gaming Star Citizen
   boot.kernel.sysctl = {
   "vm.max_map_count" = 16777216;
@@ -52,6 +52,9 @@
 services.udev.enable  = true;
 services.flatpak.enable = true;
 virtualisation.docker.enable = true;
+virtualisation.waydroid.enable = true;
+hardware.bluetooth.enable = true;
+services.blueman.enable = true;
  #Enable xserver
  services.xserver  = {
    enable = true;
@@ -180,7 +183,8 @@ programs.nix-ld.enable = true;
     substituters = ["https://nix-gaming.cachix.org"];
     trusted-public-keys = ["nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="];
   };
-  
+
+   
     #Auto upgrades
     system.autoUpgrade.enable = true;
     system.autoUpgrade.allowReboot = true;
