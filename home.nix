@@ -357,7 +357,7 @@ in
     };
   };
 
-  programs.thefuck = {
+  programs.pay-respects = {
     enable = true;
     enableZshIntegration = true;
   };
