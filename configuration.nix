@@ -166,6 +166,7 @@
   services.printing = {
     enable = true;
     drivers = with pkgs; [
+      brlaser
       cups-brother-hl1210w
       cups-brother-hl2260d
       cups-brother-hll2340dw

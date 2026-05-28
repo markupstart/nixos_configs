@@ -15,7 +15,7 @@ input {
     focus-follows-mouse max-scroll-amount="33%"
 
     keyboard {
-        xkb 
+        xkb
 
 
     }
@@ -34,10 +34,10 @@ input {
         // scroll-method "two-finger"
     }
 
-    mouse 
+    mouse
 
 
-    trackpoint 
+    trackpoint
 
 
     // Uncomment this to make the mouse warp to the center of newly focused windows.
@@ -97,7 +97,7 @@ layout {
 
     // You can also customize the heights that "switch-preset-window-height" (Mod+Shift+R) toggles between.
     preset-window-heights {
- 
+
         proportion 0.5
         proportion 1.0
     }
@@ -173,6 +173,7 @@ overview {
 
 environment {
   XDG_CURRENT_DESKTOP "niri"
+    MESA_VK_WSI_PRESENT_MODE "mailbox"
   QT_QPA_PLATFORM "wayland;xcb"
   ELECTRON_OZONE_PLATFORM_HINT "auto"
   QT_QPA_PLATFORMTHEME "gtk3"
@@ -229,7 +230,7 @@ window-rule {
     // since this is the default config, and we want no false positives.
     // You can get away with just app-id="wezterm" if you want.
     match app-id=r"^org\.wezfurlong\.wezterm$"
-    default-column-width 
+    default-column-width
 }
 window-rule {
     match app-id=r"^org\.gnome\."

@@ -121,7 +121,6 @@
     bibata-cursors
     blender
     boxbuddy
-    brlaser
     cups-filters
     darktable
     dconf
