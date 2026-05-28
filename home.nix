@@ -61,6 +61,9 @@
     yazi
     zenity
     zip
+    dgop
+    fprintd
+    
 
     #utils
     fd
