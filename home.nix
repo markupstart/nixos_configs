@@ -109,7 +109,7 @@
     ethtool
     kdePackages.polkit-kde-agent-1
     killall
-    mesa-demos
+    (lib.lowPrio mesa-demos)
     nixos-generators
     pciutils # lspci
     sysstat
