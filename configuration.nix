@@ -117,9 +117,19 @@ programs.zsh.enable = true;
      };
   };
 
-  #Enable GDM
-    services.displayManager.gdm.enable = true;
-
+# Drop GDM, use Greetd to auto-login to Niri
+  services.greetd = {
+    enable = true;
+    settings = {
+      default_session = {
+        command = "${pkgs.greetd.greetd}/bin/agreety --cmd niri-session";
+      };
+      initial_session = {
+        command = "niri-session";
+        user = "mark";
+      };
+    };
+  };
   #POLKIT Authentication
   security.polkit.enable = true;
 

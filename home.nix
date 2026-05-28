@@ -160,6 +160,7 @@
     mint-themes
     mint-y-icons
     mousepad
+    nautilus
     nordzy-cursor-theme
     numix-cursor-theme
     nwg-look
