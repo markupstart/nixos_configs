@@ -1,5 +1,14 @@
 { pkgs, inputs, ... }:
 
+let
+  rsiLauncherPkg = inputs.nix-citizen.packages.${pkgs.system}.rsi-launcher;
+  rsiLauncherNiri = pkgs.writeShellScriptBin "rsi-launcher-niri" ''
+    export MESA_VK_WSI_PRESENT_MODE=mailbox
+    export MANGOHUD=1
+    export MANGOHUD_DLSYM=1
+    exec ${rsiLauncherPkg}/bin/rsi-launcher "$@"
+  '';
+in
 {
   home.username = "mark";
   home.homeDirectory = "/home/mark";
@@ -136,7 +145,6 @@
     font-awesome
     foomatic-db
     foot
-    gamemode
     gamescope
     ghostty
     glaxnimate
@@ -183,11 +191,8 @@
     transmission_4-gtk
     vlc
     vulkan-tools
-    inputs.nix-citizen.packages.${pkgs.system}.rsi-launcher
-    (writeShellScriptBin "rsi-launcher-niri" ''
-      export MESA_VK_WSI_PRESENT_MODE=mailbox
-      exec ${inputs.nix-citizen.packages.${pkgs.system}.rsi-launcher}/bin/rsi-launcher "$@"
-    '')
+    rsiLauncherPkg
+    rsiLauncherNiri
     winetricks
     xwayland-satellite
   ];
