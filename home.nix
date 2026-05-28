@@ -22,7 +22,6 @@ let
     dconf-editor
     glib
     gnome-boxes
-    gnome-weather
     handbrake
     inotify-tools
     kitty
@@ -37,7 +36,6 @@ let
     rmpc
     rssguard
     swayimg
-    swappy
     trash-cli
     unzip
     v4l-utils
@@ -94,7 +92,6 @@ let
     bash-completion
     docker-compose
     ethtool
-    kdePackages.polkit-kde-agent-1
     killall
     (lib.lowPrio mesa-demos)
     nixos-generators
@@ -130,7 +127,6 @@ let
     glaxnimate
     gnome-keyring
     grc
-    grim
     gpu-screen-recorder-gtk
     htop
     inkscape
@@ -326,9 +322,9 @@ in
     '';
 
     shellAliases = {
-      ll = "eza -la";
-      la = "eza -a";
-      ls = "eza";
+      ll = "eza --icons -F -H -a --group-directories-first --git -1";
+      la = "eza -la --icons --group-directories-first";
+      ls = "eza --icons -F -H --group-directories-first --git -1";
       rsi = "rsi-launcher-niri";
       grep = "grep --color=auto";
       clr = "clear && fastfetch";
