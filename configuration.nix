@@ -2,64 +2,87 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ inputs, config, pkgs,... }:
+{
+  inputs,
+  config,
+  pkgs,
+  ...
+}:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+  ];
 
   #enable Flakes and the new command line tool
   nix.settings = {
-    experimental-features = [ "nix-command" "flakes" ];
+    experimental-features = [
+      "nix-command"
+      "flakes"
+    ];
     substituters = [ "https://nix-gaming.cachix.org" ];
     trusted-public-keys = [ "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4=" ];
   };
 
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 14d";
+  };
+
+  nix.optimise = {
+    automatic = true;
+    dates = [ "weekly" ];
+  };
+
   #Bootloader.
-    boot = {
+  boot = {
     tmp.cleanOnBoot = true;
+    loader.systemd-boot.configurationLimit = 10;
     supportedFilesystems = [ "ntfs" ];
     loader = {
-       timeout = 2;
-       systemd-boot.enable = true;
-       efi.canTouchEfiVariables = true;
-      };
+      timeout = 2;
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
     };
+  };
 
   #Kernel to Boot
   boot.kernelPackages = pkgs.linuxPackages_latest;
- #boot.kernelPackages = pkgs.linuxPackages_zen;
+  #boot.kernelPackages = pkgs.linuxPackages_zen;
 
   #AMDGPU
-  boot.initrd.kernelModules = [ "amdgpu" "v4l2loopback" ];
+  boot.initrd.kernelModules = [
+    "amdgpu"
+    "v4l2loopback"
+  ];
   boot.extraModulePackages = [ config.boot.kernelPackages.v4l2loopback ];
 
   #Gaming Star Citizen
   boot.kernel.sysctl = {
-  "vm.max_map_count" = 16777216;
-  "fs.file-max" = 524288;
-};
+    "vm.max_map_count" = 16777216;
+    "fs.file-max" = 524288;
+  };
 
   #network host name
   networking.hostName = "nixos";
 
   virtualisation.containers.enable = true;
 
- services.udev.extraRules = ''
+  services.udev.extraRules = ''
     KERNEL=="hidraw*", ATTRS{idVendor}=="231d", ATTRS{idProduct}=="*", MODE="0660", TAG+="uaccess"
   '';
 
-services.udev.enable  = true;
-services.flatpak.enable = true;
-virtualisation.docker.enable = true;
-virtualisation.waydroid.enable = true;
-hardware.bluetooth.enable = true;
-services.blueman.enable = true;
+  services.udev.enable = true;
+  services.flatpak.enable = true;
+  virtualisation.docker.enable = true;
+  virtualisation.waydroid.enable = true;
+  hardware.bluetooth.enable = true;
+  services.blueman.enable = true;
 
-programs.nix-ld.enable = true;
-programs.zsh.enable = true;
+  programs.nix-ld.enable = true;
+  programs.zsh.enable = true;
 
   #Enable networking
 
@@ -80,14 +103,14 @@ programs.zsh.enable = true;
     LC_PAPER = "en_US.UTF-8";
     LC_TELEPHONE = "en_US.UTF-8";
     LC_TIME = "en_US.UTF-8";
-    LANG="en_US.UTF-8";
-};
+    LANG = "en_US.UTF-8";
+  };
 
   #DBUS
   services.dbus.enable = true;
 
   #Enable Niri
- programs.niri.enable = true;
+  programs.niri.enable = true;
 
   # Enable DankMaterialShell (DMS)
   programs.dms-shell = {
@@ -106,18 +129,18 @@ programs.zsh.enable = true;
       pkgs.xdg-desktop-portal-gnome
     ];
     config = {
-       # Define preferred portals for specific interfaces (optional)
-       # gnome = {
-       #   default = [ "gnome" "gtk" ]; # Example: Set the default for GNOME to use gnome and then gtk
-       #   "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ]; # Example: Use gnome-keyring for secret storage
-       # };
-       common = {
-         default = [ "gnome" ]; # Example: Set a fallback default for all desktops
-        };
-     };
+      # Define preferred portals for specific interfaces (optional)
+      # gnome = {
+      #   default = [ "gnome" "gtk" ]; # Example: Set the default for GNOME to use gnome and then gtk
+      #   "org.freedesktop.impl.portal.Secret" = [ "gnome-keyring" ]; # Example: Use gnome-keyring for secret storage
+      # };
+      common = {
+        default = [ "gnome" ]; # Example: Set a fallback default for all desktops
+      };
+    };
   };
 
-# Drop GDM, use Greetd to auto-login to Niri
+  # Drop GDM, use Greetd to auto-login to Niri
   services.greetd = {
     enable = true;
     settings = {
@@ -134,13 +157,13 @@ programs.zsh.enable = true;
   security.polkit.enable = true;
 
   #Enable CUPS to print documents.
-    services.printing = {
+  services.printing = {
     enable = true;
-    drivers = with pkgs; [ 
-      cups-brother-hl1210w 
-      cups-brother-hl2260d 
-      cups-brother-hll2340dw 
-      foomatic-db 
+    drivers = with pkgs; [
+      cups-brother-hl1210w
+      cups-brother-hl2260d
+      cups-brother-hll2340dw
+      foomatic-db
     ];
   };
   #Enable sound with pipewire.
@@ -151,24 +174,33 @@ programs.zsh.enable = true;
     pulse.enable = true;
     # use the example session manager (no others are packaged yet so this is enabled by default,
     # no need to redefine it in your config for now)
-    };
+  };
 
   #user account
   users.users.mark = {
     isNormalUser = true;
     description = "mark";
     shell = pkgs.zsh;
-    extraGroups = [ "networkmanager" "wheel" "audio" "video" "disk" "libvirtd" "docker" "dialout" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "audio"
+      "video"
+      "disk"
+      "libvirtd"
+      "docker"
+      "dialout"
+    ];
   };
 
-    # thunar with plugins
+  # thunar with plugins
   programs.xfconf.enable = true;
   programs.thunar = {
     enable = true;
     plugins = with pkgs; [
       thunar-archive-plugin
       thunar-volman
-    ];  
+    ];
   };
 
   services.gvfs.enable = true; # Mount, trash, and other functionalities
@@ -183,25 +215,25 @@ programs.zsh.enable = true;
 
   #steam
   programs.steam = {
-  enable = true;
-  remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
-  dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
-};
+    enable = true;
+    remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
+    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
+  };
 
   #Enable OpenGL
   hardware.graphics.extraPackages = with pkgs; [
-  rocmPackages.clr.icd
-  mesa.opencl
-];
+    rocmPackages.clr.icd
+    mesa.opencl
+  ];
 
-    hardware.graphics.enable32Bit = true; # For 32 bit applications
+  hardware.graphics.enable32Bit = true; # For 32 bit applications
 
-   #HIP corrections
-   systemd.tmpfiles.rules = [
-       "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.rocmPackages.clr}"
-    ];
+  #HIP corrections
+  systemd.tmpfiles.rules = [
+    "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.rocmPackages.clr}"
+  ];
 
-   nixpkgs.overlays = [
+  nixpkgs.overlays = [
     (final: prev: {
       openldap = prev.openldap.overrideAttrs (oldAttrs: {
         doCheck = false;
@@ -209,10 +241,14 @@ programs.zsh.enable = true;
     })
   ];
 
-    #Auto upgrades
-    system.autoUpgrade.enable = true;
-    system.autoUpgrade.allowReboot = true;
+  #Auto upgrades
+  system.autoUpgrade = {
+    enable = true;
+    allowReboot = true;
+    dates = "weekly";
+    flake = "${inputs.self.outPath}#nixos";
+  };
 
-    #NIXOS Version Number
-    system.stateVersion = "26.05";
- }
+  #NIXOS Version Number
+  system.stateVersion = "26.05";
+}
