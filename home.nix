@@ -295,6 +295,7 @@
       la = "eza -a";
       ls = "eza";
       grep = "grep --color=auto";
+      clr = "clear && fastfetch";
     };
   };
 
