@@ -124,8 +124,15 @@ programs.zsh.enable = true;
   security.polkit.enable = true;
 
   #Enable CUPS to print documents.
-  services.printing.enable = true;
-
+    services.printing = {
+    enable = true;
+    drivers = with pkgs; [ 
+      cups-brother-hl1210w 
+      cups-brother-hl2260d 
+      cups-brother-hll2340dw 
+      foomatic-db 
+    ];
+  };
   #Enable sound with pipewire.
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
@@ -144,13 +151,16 @@ programs.zsh.enable = true;
     extraGroups = [ "networkmanager" "wheel" "audio" "video" "disk" "libvirtd" "docker" "dialout" ];
   };
 
-  #thunar with plugins
+    # thunar with plugins
   programs.xfconf.enable = true;
-  programs.thunar.enable = true;
-  programs.thunar.plugins = with pkgs.xfce; [
-  thunar-archive-plugin
-  thunar-volman
-];
+  programs.thunar = {
+    enable = true;
+    plugins = with pkgs; [
+      thunar-archive-plugin
+      thunar-volman
+    ];  
+  };
+
   services.gvfs.enable = true; # Mount, trash, and other functionalities
   services.tumbler.enable = true; # Thumbnail support for images
 
@@ -181,6 +191,13 @@ programs.zsh.enable = true;
        "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.rocmPackages.clr}"
     ];
 
+   nixpkgs.overlays = [
+    (final: prev: {
+      openldap = prev.openldap.overrideAttrs (oldAttrs: {
+        doCheck = false;
+      });
+    })
+  ];
 
     #Auto upgrades
     system.autoUpgrade.enable = true;

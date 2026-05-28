@@ -8,38 +8,35 @@
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
-  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usb_storage" "sd_mod" "sr_mod" ];
+  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "ahci" "usbhid" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
   fileSystems."/" =
-    { device = "/dev/disk/by-uuid/a5f1a322-df97-4620-9232-91a9f7a28c65";
+    { device = "/dev/disk/by-uuid/058709a0-3979-4a4a-b885-73480a392f9d";
       fsType = "ext4";
     };
 
   fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/96F3-5772";
+    { device = "/dev/disk/by-uuid/C369-6B2D";
       fsType = "vfat";
       options = [ "fmask=0077" "dmask=0077" ];
     };
 
-  fileSystems."/home/mark/storage" =
-    { device = "/dev/disk/by-uuid/80701490-f8f5-457a-b4b5-7b3d8ab7a7ef";
+ fileSystems."/home/mark/storage" =
+    { device = "/dev/disk/by-uuid/9400981c-f198-4488-a7fb-75a5a0f62129";
       fsType = "ext4";
     };
 
+ fileSystems."/home/mark/media" =
+    { device = "/dev/disk/by-uuid/85d0fac3-619c-4504-95ec-fb00ead832a9";
+      fsType = "ext4";
+    };    
+    
   swapDevices =
-    [ { device = "/dev/disk/by-uuid/81b6ed78-822c-48f7-bbbb-c65d93f6200a"; }
+    [ { device = "/dev/disk/by-uuid/c99d6a61-ad91-475d-b12e-65cf3bf47c21"; }
     ];
-
-  # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
-  # (the default) this is the recommended approach. When using systemd-networkd it's
-  # still possible to use this option, but it's recommended to use it in conjunction
-  # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
-  networking.useDHCP = lib.mkDefault true;
-  # networking.interfaces.enp10s0.useDHCP = lib.mkDefault true;
-  # networking.interfaces.wlp9s0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;

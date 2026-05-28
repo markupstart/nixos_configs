@@ -123,9 +123,6 @@
     blender
     boxbuddy
     brlaser
-    cups-brother-hl1210w
-    cups-brother-hl2260d
-    cups-brother-hll2340dw
     cups-filters
     darktable
     dconf
@@ -173,7 +170,6 @@
     obs-studio-plugins.obs-vkcapture
     obs-studio-plugins.wlrobs
     papers
-    podman
     power-profiles-daemon
     pulsemixer
     pw-volume
