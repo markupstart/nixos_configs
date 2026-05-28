@@ -90,6 +90,7 @@ let
     delta
     fd
     dust
+    cliphist
     ripgrep
     dnsmasq
     direnv
@@ -109,13 +110,17 @@ let
 
   nixPackages = with pkgs; [
     comma
+    deadnix
     inxi
     nh
+    nix-tree
     nixd
     nix-direnv
     nixfmt
+    nvd
     nitch
     nix-output-monitor
+    statix
   ];
 
   productivityPackages = with pkgs; [
@@ -128,6 +133,7 @@ let
   ];
 
   monitoringPackages = with pkgs; [
+    iotop
     lsof
     ltrace
     strace
@@ -142,8 +148,10 @@ let
     (lib.lowPrio mesa-demos)
     nixos-generators
     pciutils
+    smartmontools
     sysstat
     usbutils
+    wl-clipboard
   ];
 
   desktopAppPackages = with pkgs; [
@@ -235,6 +243,15 @@ in
       user.name = "markupstart";
       user.email = "mark@upstarters.com";
       credential.helper = "${pkgs.git.override { withLibsecret = true; }}/bin/git-credential-libsecret";
+    };
+
+    delta = {
+      enable = true;
+      options = {
+        line-numbers = true;
+        navigate = true;
+        side-by-side = true;
+      };
     };
   };
 
@@ -331,6 +348,20 @@ in
     nix-direnv.enable = true;
   };
 
+  programs.bat = {
+    enable = true;
+    config = {
+      pager = "less -FR";
+      style = "numbers,changes,header";
+      theme = "TwoDark";
+    };
+  };
+
+  programs.thefuck = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+
   # Zsh configuration managed by Home Manager
   programs.zsh = {
     enable = true;
@@ -360,6 +391,7 @@ in
       enable = true;
       theme = "intheloop";
       plugins = [
+        "autopair"
         "colored-man-pages"
         "command-not-found"
         "fzf"
@@ -376,6 +408,11 @@ in
       # Better completion menu behavior
       zstyle ':completion:*' menu select
       zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+
+      # fzf-tab plugin for fuzzy completion menus.
+      if [[ -f ${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh ]]; then
+        source ${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh
+      fi
     '';
 
     shellAliases = {
