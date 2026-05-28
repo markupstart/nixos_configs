@@ -21,8 +21,14 @@
       "nix-command"
       "flakes"
     ];
-    substituters = [ "https://nix-gaming.cachix.org" ];
-    trusted-public-keys = [ "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4=" ];
+    substituters = [
+      "https://nix-gaming.cachix.org"
+      "https://nix-citizen.cachix.org"
+    ];
+    trusted-public-keys = [
+      "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
+      "nix-citizen.cachix.org-1:lPMkWc2X8XD4/7YPEEwXKKBg+SVbYTVrAaLA2wQTKCo="
+    ];
   };
 
   nix.gc = {
@@ -39,9 +45,9 @@
   #Bootloader.
   boot = {
     tmp.cleanOnBoot = true;
-    loader.systemd-boot.configurationLimit = 10;
     supportedFilesystems = [ "ntfs" ];
     loader = {
+      systemd-boot.configurationLimit = 10;
       timeout = 2;
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;

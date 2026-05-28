@@ -1,27 +1,24 @@
-{ config, pkgs, ... }:
+{ pkgs, inputs, ... }:
+
 {
   home.username = "mark";
   home.homeDirectory = "/home/mark";
-
-  #basic configuration of git, please change to your own
   programs.git = {
     enable = true;
     settings = {
       user.name = "markupstart";
       user.email = "mark@upstarters.com";
-      credential.helper = "${
-          pkgs.git.override { withLibsecret = true; }
-        }/bin/git-credential-libsecret";
+      credential.helper = "${pkgs.git.override { withLibsecret = true; }}/bin/git-credential-libsecret";
     };
   };
 
   #Virt-Manager setup
   dconf.settings = {
     "org/virt-manager/virt-manager/connections" = {
-      autoconnect = ["qemu:///system"];
-      uris = ["qemu:///system"];
+      autoconnect = [ "qemu:///system" ];
+      uris = [ "qemu:///system" ];
+    };
   };
-};
 
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [
@@ -63,7 +60,6 @@
     zip
     dgop
     fprintd
-    
 
     #utils
     fd
@@ -188,6 +184,7 @@
     transmission_4-gtk
     vlc
     vulkan-tools
+    inputs.nix-citizen.packages.${pkgs.system}.rsi-launcher
     winetricks
     xwayland-satellite
   ];
