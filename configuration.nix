@@ -122,7 +122,7 @@ programs.zsh.enable = true;
     enable = true;
     settings = {
       default_session = {
-        command = "${pkgs.greetd.greetd}/bin/agreety --cmd niri-session";
+        command = "${pkgs.greetd}/bin/agreety --cmd niri-session";
       };
       initial_session = {
         command = "niri-session";
