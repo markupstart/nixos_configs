@@ -8,30 +8,8 @@ let
     export MANGOHUD_DLSYM=1
     exec ${rsiLauncherPkg}/bin/rsi-launcher "$@"
   '';
-in
-{
-  home.username = "mark";
-  home.homeDirectory = "/home/mark";
-  programs.git = {
-    enable = true;
-    settings = {
-      user.name = "markupstart";
-      user.email = "mark@upstarters.com";
-      credential.helper = "${pkgs.git.override { withLibsecret = true; }}/bin/git-credential-libsecret";
-    };
-  };
 
-  #Virt-Manager setup
-  dconf.settings = {
-    "org/virt-manager/virt-manager/connections" = {
-      autoconnect = [ "qemu:///system" ];
-      uris = [ "qemu:///system" ];
-    };
-  };
-
-  # Packages that should be installed to the user profile.
-  home.packages = with pkgs; [
-    #archives
+  archiveAndMediaPackages = with pkgs; [
     alacritty
     audacious
     audacity
@@ -69,17 +47,14 @@ in
     zip
     dgop
     fprintd
+  ];
 
-    #utils
+  utilityPackages = with pkgs; [
     fd
-    ripgrep # recursively searches directories for a regex pattern
-
-    #networking tools
+    ripgrep
     dnsmasq
-    ipcalc # it is a calculator for the IPv4/v6 addresses
-    nmap # A utility for network discovery and security auditing
-
-    #misc
+    ipcalc
+    nmap
     curl
     exiftool
     file
@@ -90,28 +65,32 @@ in
     tree
     which
     zstd
+  ];
 
-    # nix related
+  nixPackages = with pkgs; [
     inxi
     nixd
     nixfmt
     nitch
     nix-output-monitor
+  ];
 
-    #productivity
+  productivityPackages = with pkgs; [
     bottom
     btop
     clapper
-    glow # markdown previewer in terminal
-    iftop # network monitoring
+    glow
+    iftop
     owncloud-client
+  ];
 
-    #system call monitoring
-    lsof # list open files
-    ltrace # library call monitoring
-    strace # system call monitoring
+  monitoringPackages = with pkgs; [
+    lsof
+    ltrace
+    strace
+  ];
 
-    #system tools
+  systemPackages = with pkgs; [
     bash-completion
     docker-compose
     ethtool
@@ -119,11 +98,12 @@ in
     killall
     (lib.lowPrio mesa-demos)
     nixos-generators
-    pciutils # lspci
+    pciutils
     sysstat
-    usbutils # lsusb
+    usbutils
+  ];
 
-    #my software for user
+  desktopAppPackages = with pkgs; [
     adwaita-icon-theme
     adwaita-qt
     adwaita-qt6
@@ -191,11 +171,45 @@ in
     transmission_4-gtk
     vlc
     vulkan-tools
-    rsiLauncherPkg
-    rsiLauncherNiri
     winetricks
     xwayland-satellite
   ];
+
+  launcherPackages = [
+    rsiLauncherPkg
+    rsiLauncherNiri
+  ];
+in
+{
+  home.username = "mark";
+  home.homeDirectory = "/home/mark";
+  programs.git = {
+    enable = true;
+    settings = {
+      user.name = "markupstart";
+      user.email = "mark@upstarters.com";
+      credential.helper = "${pkgs.git.override { withLibsecret = true; }}/bin/git-credential-libsecret";
+    };
+  };
+
+  #Virt-Manager setup
+  dconf.settings = {
+    "org/virt-manager/virt-manager/connections" = {
+      autoconnect = [ "qemu:///system" ];
+      uris = [ "qemu:///system" ];
+    };
+  };
+
+  # Packages that should be installed to the user profile.
+  home.packages =
+    archiveAndMediaPackages
+    ++ utilityPackages
+    ++ nixPackages
+    ++ productivityPackages
+    ++ monitoringPackages
+    ++ systemPackages
+    ++ desktopAppPackages
+    ++ launcherPackages;
 
   xdg.desktopEntries.rsi-launcher-niri = {
     name = "RSI Launcher (Niri)";
