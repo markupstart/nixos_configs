@@ -207,6 +207,13 @@ in
     icon = "rsi-launcher";
   };
 
+  # Hide upstream launcher entry so only the Niri wrapper appears in app launchers.
+  xdg.desktopEntries.rsi-launcher = {
+    name = "RSI Launcher";
+    noDisplay = true;
+    hidden = true;
+  };
+
   home.sessionVariables = {
     # Prefer native Wayland backend for Electron apps like VS Code.
     NIXOS_OZONE_WL = "1";
