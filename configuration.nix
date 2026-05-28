@@ -13,6 +13,8 @@
   #enable Flakes and the new command line tool
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
+    substituters = [ "https://nix-gaming.cachix.org" ];
+    trusted-public-keys = [ "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4=" ];
   };
 
   #Bootloader.
@@ -26,22 +28,22 @@
       };
     };
 
-  #Kernel to Boot  
+  #Kernel to Boot
   boot.kernelPackages = pkgs.linuxPackages_latest;
  #boot.kernelPackages = pkgs.linuxPackages_zen;
 
   #AMDGPU
   boot.initrd.kernelModules = [ "amdgpu" "v4l2loopback" ];
-  boot.extraModulePackages = [ pkgs.linuxPackages_latest.v4l2loopback ];
-  
+  boot.extraModulePackages = [ config.boot.kernelPackages.v4l2loopback ];
+
   #Gaming Star Citizen
   boot.kernel.sysctl = {
   "vm.max_map_count" = 16777216;
   "fs.file-max" = 524288;
-};  
-  
+};
+
   #network host name
-  networking.hostName = "nixos"; 
+  networking.hostName = "nixos";
 
   virtualisation.containers.enable = true;
 
@@ -55,13 +57,9 @@ virtualisation.docker.enable = true;
 virtualisation.waydroid.enable = true;
 hardware.bluetooth.enable = true;
 services.blueman.enable = true;
- #Enable xserver
- services.xserver  = {
-   enable = true;
-   videoDrivers = [ "amdgpu" ];   
- };
 
 programs.nix-ld.enable = true;
+programs.zsh.enable = true;
 
   #Enable networking
 
@@ -91,7 +89,16 @@ programs.nix-ld.enable = true;
   #Enable Niri
  programs.niri.enable = true;
 
-  #XDG Portals enable with gtk and niri 
+  # Enable DankMaterialShell (DMS)
+  programs.dms-shell = {
+    enable = true;
+    systemd.enable = true;
+    enableSystemMonitoring = true;
+    enableDynamicTheming = true;
+    enableClipboardPaste = true;
+  };
+
+  #XDG Portals enable with gtk and niri
   xdg.portal = {
     enable = true;
     extraPortals = [
@@ -110,23 +117,17 @@ programs.nix-ld.enable = true;
      };
   };
 
-  #Enable SDDM
-   services.xserver.displayManager.gdm.enable = true;
-
-  # Configure keymap in X11
-  services.xserver.xkb = {  
-    layout = "us";
-    variant = "";
-  };
+  #Enable GDM
+    services.displayManager.gdm.enable = true;
 
   #POLKIT Authentication
-  security.polkit.enable = true; 
+  security.polkit.enable = true;
 
   #Enable CUPS to print documents.
   services.printing.enable = true;
 
   #Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -139,6 +140,7 @@ programs.nix-ld.enable = true;
   users.users.mark = {
     isNormalUser = true;
     description = "mark";
+    shell = pkgs.zsh;
     extraGroups = [ "networkmanager" "wheel" "audio" "video" "disk" "libvirtd" "docker" "dialout" ];
   };
 
@@ -150,26 +152,26 @@ programs.nix-ld.enable = true;
   thunar-volman
 ];
   services.gvfs.enable = true; # Mount, trash, and other functionalities
-  services.tumbler.enable = true; # Thumbnail support for images 
-  
+  services.tumbler.enable = true; # Thumbnail support for images
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
- 
-  #Enable Virt-Manager 
+
+  #Enable Virt-Manager
   virtualisation.libvirtd.enable = true;
   programs.virt-manager.enable = true;
-  
+
   #steam
   programs.steam = {
   enable = true;
   remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
   dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
 };
-  
+
   #Enable OpenGL
   hardware.graphics.extraPackages = with pkgs; [
   rocmPackages.clr.icd
-  mesa.opencl   
+  mesa.opencl
 ];
 
     hardware.graphics.enable32Bit = true; # For 32 bit applications
@@ -179,16 +181,11 @@ programs.nix-ld.enable = true;
        "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.rocmPackages.clr}"
     ];
 
-    nix.settings = {
-    substituters = ["https://nix-gaming.cachix.org"];
-    trusted-public-keys = ["nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="];
-  };
 
-   
     #Auto upgrades
     system.autoUpgrade.enable = true;
     system.autoUpgrade.allowReboot = true;
 
     #NIXOS Version Number
-    system.stateVersion = "25.05";
+    system.stateVersion = "26.05";
  }

@@ -1,15 +1,14 @@
-{ config, pkgs, inputs,... }:
+{ config, pkgs, ... }:
 {
   home.username = "mark";
   home.homeDirectory = "/home/mark";
-  home.enableNixpkgsReleaseCheck = false;
 
   #basic configuration of git, please change to your own
   programs.git = {
     enable = true;
-    userName = "markupstart";
-    userEmail = "mark@upstarters.com";
-     extraConfig = {
+    settings = {
+      user.name = "markupstart";
+      user.email = "mark@upstarters.com";
       credential.helper = "${
           pkgs.git.override { withLibsecret = true; }
         }/bin/git-credential-libsecret";
@@ -25,199 +24,288 @@
 };
 
   # Packages that should be installed to the user profile.
-    home.packages = with pkgs; [
+  home.packages = with pkgs; [
     #archives
-	v4l-utils
-	catimg
-	chafa
-	ripdrag
-	yazi
-	inotify-tools
-	swayimg
-	swappy
+    alacritty
+    audacious
+    audacity
+    bazecor
+    cabextract
+    catimg
+    cava
+    chafa
+    davinci-resolve-studio
+    dconf-editor
+    glib
+    gnome-boxes
+    gnome-weather
+    handbrake
+    inotify-tools
+    kitty
+    libnotify
+    micro
+    mpd
+    ollama-rocm
+    p7zip
     pamixer
     pavucontrol
-	gnome-weather
-	bazecor
-	davinci-resolve-studio
-    zip
-    audacity
-    audacious
-    handbrake
-    gnome-boxes
-    nautilus
-    mpd
+    ripdrag
     rmpc
-    cava
-    dconf-editor
-	trash-cli
-    libnotify
-    xz
-    unzip
-    p7zip
-    cabextract
-    zenity
-    alacritty
-    alpaca
-    ollama-rocm
-	glib
-    starship
-    flatpak
     rssguard
-    micro
-    kitty
-    xdg-desktop-portal-gnome
-    xdg-desktop-portal-gtk
-    swww
+    swayimg
+    swappy
+    trash-cli
+    unzip
+    v4l-utils
+    xz
+    yazi
+    zenity
+    zip
 
     #utils
+    fd
     ripgrep # recursively searches directories for a regex pattern
-    fzf # A command-line fuzzy finder
-    atuin
-    zoxide
 
     #networking tools
+    dnsmasq
+    ipcalc # it is a calculator for the IPv4/v6 addresses
     nmap # A utility for network discovery and security auditing
-    ipcalc  # it is a calculator for the IPv4/v6 addresses
 
     #misc
+    curl
+    exiftool
     file
-    which
-    tree
     gawk
-    zstd
     jq
-    socat
     mission-center
-    
+    socat
+    tree
+    which
+    zstd
+
     # nix related
-    nix-output-monitor
-    nitch
     inxi
-    
+    nixd
+    nixfmt
+    nitch
+    nix-output-monitor
+
     #productivity
-    glow # markdown previewer in terminal
+    bottom
     btop
-    iftop # network monitoring
     clapper
-    spotify
-    mission-center  
-    nextcloud-client
-    
+    glow # markdown previewer in terminal
+    iftop # network monitoring
+    owncloud-client
+
     #system call monitoring
-    strace # system call monitoring
-    ltrace # library call monitoring
     lsof # list open files
+    ltrace # library call monitoring
+    strace # system call monitoring
 
     #system tools
-    sysstat
+    bash-completion
+    docker-compose
     ethtool
-    pciutils # lspci
-    usbutils # lsusb
-    nixos-generators
-    killall
-    glxinfo
     kdePackages.polkit-kde-agent-1
+    killall
+    mesa-demos
+    nixos-generators
+    pciutils # lspci
+    sysstat
+    usbutils # lsusb
 
     #my software for user
+    adwaita-icon-theme
     adwaita-qt
     adwaita-qt6
-    roboto
-    mate.mate-themes
-    mate.mate-icon-theme
-    terminus_font
-    vlc
-    font-awesome
-    mate.engrampa
-    qalculate-gtk
-    fish
-    thunderbird
-    mint-y-icons
-    mint-themes
-    numix-cursor-theme
-    distrobox
-    podman
+    bibata-cursors
+    blender
     boxbuddy
-    vscode
+    brlaser
+    cups-brother-hl1210w
+    cups-brother-hl2260d
+    cups-brother-hll2340dw
+    cups-filters
+    darktable
     dconf
-    firefox
-    lutris
-    polkit
-    polkit_gnome
-    lxde.lxsession
-    fastfetch
-    adwaita-icon-theme
-    xfce.thunar-archive-plugin
-    winetricks
-    scribus
-    inkscape
-    extremetuxracer
-    superTuxKart
-    superTux
-    makemkv
-    gamescope
-    mangohud
-    gamemode
-    pulsemixer
     discord
+    distrobox
+    element-desktop
+    engrampa
+    extremetuxracer
+    fastfetch
+    ffmpeg
+    firefox
+    fish
+    font-awesome
+    foomatic-db
+    foot
+    gamemode
+    gamescope
+    ghostty
+    glaxnimate
+    gnome-keyring
+    grc
+    grim
+    gpu-screen-recorder-gtk
+    htop
+    inkscape
+    kdePackages.kdenlive
+    libreoffice-fresh
+    lutris
+    makemkv
+    mako
+    mangohud
+    mate-icon-theme
+    mate-themes
+    matugen
+    mint-themes
+    mint-y-icons
+    mousepad
+    nordzy-cursor-theme
+    numix-cursor-theme
+    nwg-look
     obs-studio
-    obs-studio-plugins.wlrobs
-    obs-studio-plugins.obs-vaapi
-    obs-studio-plugins.obs-vkcapture
     obs-studio-plugins.obs-gstreamer
     obs-studio-plugins.obs-pipewire-audio-capture
-    htop
-    btop
-    wofi
-    nwg-look
-    power-profiles-daemon
-    xfce.mousepad
-    xfce.thunar-archive-plugin
-    darktable
-    adwaita-icon-theme
-    font-awesome
-    grc
-    lxqt.lxqt-sudo
-    libreoffice-fresh  
-    ghostty
-    foot
-    libsForQt5.kdenlive
-    glaxnimate
-    pw-volume
-    copyq
-    waybar
-    mate.mate-polkit
-    nordzy-cursor-theme
-    gnome-keyring
-    swaybg
-    swayidle
-    swaylock
-    swayosd
-    wallust
-    xwayland-satellite
-    mako
-    gpu-screen-recorder-gtk
+    obs-studio-plugins.obs-vaapi
+    obs-studio-plugins.obs-vkcapture
+    obs-studio-plugins.wlrobs
     papers
-    bibata-cursors
-    grim
-    vulkan-tools
-    blender-hip
-    virt-manager
-    ffmpeg
+    podman
+    power-profiles-daemon
+    pulsemixer
+    pw-volume
+    qalculate-gtk
+    roboto
+    scribus
+    supertux
+    supertuxkart
     system-config-printer
-    cups-brother-hll2340dw
-    foomatic-db
+    terminus_font
+    thunderbird
     transmission_4-gtk
-    cups-filters
-    brlaser
-    cups-brother-hl2260d
-    cups-brother-hl1210w
-    
-    ];
+    vlc
+    vulkan-tools
+    winetricks
+    xwayland-satellite
+  ];
+
+  home.sessionVariables = {
+    # Prefer native Wayland backend for Electron apps like VS Code.
+    NIXOS_OZONE_WL = "1";
+  };
+
+  programs.vscode = {
+    enable = true;
+    # FHS mode improves compatibility for extensions shipping prebuilt binaries.
+    package = pkgs.vscode.fhs;
+
+    profiles.default = {
+      extensions = with pkgs.vscode-extensions; [
+        jnoortheen.nix-ide
+        ms-python.python
+        ms-vscode-remote.remote-ssh
+      ];
+
+      userSettings = {
+        "editor.formatOnSave" = true;
+        "files.autoSave" = "afterDelay";
+
+        "nix.enableLanguageServer" = true;
+        "nix.serverPath" = "nixd";
+        "nix.formatterPath" = "nixfmt";
+
+        "[nix]" = {
+          "editor.defaultFormatter" = "jnoortheen.nix-ide";
+        };
+      };
+    };
+  };
 
   #enable eza
   programs.eza.enable = true;
- 
+
+  # Shell integrations (better than package-only installs)
+  programs.fzf = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+
+  programs.zoxide = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+
+  programs.atuin = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+
+  # Zsh configuration managed by Home Manager
+  programs.zsh = {
+    enable = true;
+    enableCompletion = true;
+    autocd = true;
+
+    completionInit = "autoload -U compinit && compinit -d ~/.cache/zsh/zcompdump-$ZSH_VERSION";
+
+    setOptions = [
+      "INTERACTIVE_COMMENTS"
+      "EXTENDED_HISTORY"
+    ];
+
+    autosuggestion.enable = true;
+    syntaxHighlighting.enable = true;
+    historySubstringSearch.enable = true;
+
+    history = {
+      size = 10000;
+      save = 10000;
+      ignoreDups = true;
+      ignoreSpace = true;
+      share = true;
+    };
+
+    oh-my-zsh = {
+      enable = true;
+      theme = "robbyrussell";
+      plugins = [
+        "colored-man-pages"
+        "command-not-found"
+        "fzf"
+        "git"
+        "sudo"
+      ];
+    };
+
+    initContent = ''
+      # History substring search with arrow keys
+      bindkey "^[[A" history-substring-search-up
+      bindkey "^[[B" history-substring-search-down
+
+      # Better completion menu behavior
+      zstyle ':completion:*' menu select
+      zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+    '';
+
+    shellAliases = {
+      ll = "eza -la";
+      la = "eza -a";
+      ls = "eza";
+      grep = "grep --color=auto";
+    };
+  };
+
+  # Use Home Manager for per-user config files under ~/.config
+  xdg.configFile."niri/config.kdl".source = ./dotfiles/niri/config.kdl;
+  xdg.configFile."niri/dms/binds.kdl".source = ./dotfiles/niri/dms/binds.kdl;
+
+  # Examples:
+  # xdg.configFile."waybar/config".source = ./dotfiles/waybar/config;
+  # xdg.configFile."mako/config".source = ./dotfiles/mako/config;
+
   # Let home Manager install and manage itself.
   programs.home-manager.enable = true;
 
@@ -229,5 +317,5 @@
   # You can update home Manager without changing this value. See
   # the home Manager release notes for a list of state version
   # changes in each release.
-  home.stateVersion = "25.05";
+  home.stateVersion = "26.05";
 }
