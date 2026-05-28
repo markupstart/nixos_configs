@@ -211,7 +211,6 @@ in
   xdg.desktopEntries.rsi-launcher = {
     name = "RSI Launcher";
     noDisplay = true;
-    hidden = true;
   };
 
   home.sessionVariables = {
