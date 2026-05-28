@@ -9,6 +9,44 @@ let
     exec ${rsiLauncherPkg}/bin/rsi-launcher "$@"
   '';
 
+  sysStatus = pkgs.writeShellScriptBin "sys-status" ''
+    #!/usr/bin/env bash
+    set -euo pipefail
+
+    echo "== System Status =="
+    echo "Time: $(date '+%Y-%m-%d %H:%M:%S')"
+    echo
+
+    echo "[Temperatures]"
+    if command -v sensors >/dev/null 2>&1; then
+      sensors 2>/dev/null | awk '/°C/ {print "  " $0; count++; if (count >= 6) exit}' || true
+    else
+      echo "  sensors not found (install lm_sensors support)"
+    fi
+    echo
+
+    echo "[GPU]"
+    if command -v nvidia-smi >/dev/null 2>&1; then
+      nvidia-smi --query-gpu=name,temperature.gpu,utilization.gpu,memory.used,memory.total --format=csv,noheader,nounits \
+        | awk -F', *' '{printf "  %s | Temp: %sC | Util: %s%% | VRAM: %s/%s MiB\n", $1, $2, $3, $4, $5}'
+    elif ls /sys/class/drm/card*/device/hwmon/hwmon*/temp1_input >/dev/null 2>&1; then
+      for t in /sys/class/drm/card*/device/hwmon/hwmon*/temp1_input; do
+        temp_c=$(( $(cat "$t") / 1000 ))
+        echo "  $(dirname "$t" | sed 's#^/sys/class/drm/##') | Temp: ''${temp_c}C"
+      done
+    else
+      echo "  GPU telemetry not available"
+    fi
+    echo
+
+    echo "[Network]"
+    ip -brief address | awk '{print "  " $1 " " $3}'
+    default_if=$(ip route show default 2>/dev/null | awk '/default/ {print $5; exit}')
+    if [[ -n "''${default_if:-}" ]]; then
+      echo "  Default route: $default_if"
+    fi
+  '';
+
   archiveAndMediaPackages = with pkgs; [
     alacritty
     audacious
@@ -48,9 +86,13 @@ let
   ];
 
   utilityPackages = with pkgs; [
+    bat
+    delta
     fd
+    dust
     ripgrep
     dnsmasq
+    direnv
     ipcalc
     nmap
     curl
@@ -66,8 +108,11 @@ let
   ];
 
   nixPackages = with pkgs; [
+    comma
     inxi
+    nh
     nixd
+    nix-direnv
     nixfmt
     nitch
     nix-output-monitor
@@ -93,6 +138,7 @@ let
     docker-compose
     ethtool
     killall
+    lm_sensors
     (lib.lowPrio mesa-demos)
     nixos-generators
     pciutils
@@ -175,6 +221,10 @@ let
     rsiLauncherPkg
     rsiLauncherNiri
   ];
+
+  scriptPackages = [
+    sysStatus
+  ];
 in
 {
   home.username = "mark";
@@ -205,7 +255,8 @@ in
     ++ monitoringPackages
     ++ systemPackages
     ++ desktopAppPackages
-    ++ launcherPackages;
+    ++ launcherPackages
+    ++ scriptPackages;
 
   xdg.desktopEntries.rsi-launcher-niri = {
     name = "RSI Launcher (Niri)";
@@ -274,6 +325,12 @@ in
     enableZshIntegration = true;
   };
 
+  programs.direnv = {
+    enable = true;
+    enableZshIntegration = true;
+    nix-direnv.enable = true;
+  };
+
   # Zsh configuration managed by Home Manager
   programs.zsh = {
     enable = true;
@@ -328,6 +385,12 @@ in
       myip = "ip -brief address | awk '{print \$1 \" \" \$3}' && echo -n 'External: ' && curl -s ifconfig.me && echo";
       ports = "ss -tulanp";
       listening = "ss -tulnp";
+      nsw = "sudo nixos-rebuild switch --flake ~/nixos_configs#nixos";
+      ntest = "sudo nixos-rebuild test --flake ~/nixos_configs#nixos";
+      nup = "nix flake update ~/nixos_configs && sudo nixos-rebuild switch --flake ~/nixos_configs#nixos";
+      ngc = "nix-collect-garbage -d && sudo nix-collect-garbage -d";
+      ncheck = "sudo nixos-rebuild dry-build --flake ~/nixos_configs#nixos";
+      stat = "sys-status";
       rsi = "rsi-launcher-niri";
       grep = "grep --color=auto";
       clr = "clear && fastfetch";
