@@ -184,9 +184,23 @@
     vlc
     vulkan-tools
     inputs.nix-citizen.packages.${pkgs.system}.rsi-launcher
+    (writeShellScriptBin "rsi-launcher-niri" ''
+      export MESA_VK_WSI_PRESENT_MODE=mailbox
+      exec ${inputs.nix-citizen.packages.${pkgs.system}.rsi-launcher}/bin/rsi-launcher "$@"
+    '')
     winetricks
     xwayland-satellite
   ];
+
+  xdg.desktopEntries.rsi-launcher-niri = {
+    name = "RSI Launcher (Niri)";
+    genericName = "Star Citizen Launcher";
+    comment = "Launch RSI Launcher with Niri-specific Vulkan present mode";
+    exec = "rsi-launcher-niri %U";
+    terminal = false;
+    categories = [ "Game" ];
+    icon = "rsi-launcher";
+  };
 
   home.sessionVariables = {
     # Prefer native Wayland backend for Electron apps like VS Code.
@@ -290,6 +304,7 @@
       ll = "eza -la";
       la = "eza -a";
       ls = "eza";
+      rsi = "rsi-launcher-niri";
       grep = "grep --color=auto";
       clr = "clear && fastfetch";
     };
