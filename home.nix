@@ -326,6 +326,8 @@ in
       la = "eza -la --icons --group-directories-first";
       ls = "eza --icons -F -H --group-directories-first --git -1";
       myip = "ip -brief address | awk '{print \$1 \" \" \$3}' && echo -n 'External: ' && curl -s ifconfig.me && echo";
+      ports = "ss -tulanp";
+      listening = "ss -tulnp";
       rsi = "rsi-launcher-niri";
       grep = "grep --color=auto";
       clr = "clear && fastfetch";
