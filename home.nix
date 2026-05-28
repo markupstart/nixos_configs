@@ -305,7 +305,7 @@ in
 
     oh-my-zsh = {
       enable = true;
-      theme = "robbyrussell";
+      theme = "intheloop";
       plugins = [
         "colored-man-pages"
         "command-not-found"
