@@ -429,6 +429,9 @@ in
       if [[ -f ${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh ]]; then
         source ${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh
       fi
+
+      # Quick git commit+push: gacp "message"
+      gacp() { git add . && git commit -m "$*" && git push }
     '';
 
     shellAliases = {
@@ -447,7 +450,6 @@ in
       rsi = "rsi-launcher-niri";
       grep = "grep --color=auto";
       clr = "clear && fastfetch";
-      gc = "git add . && git commit -m '$*' && git push";
 
     };
   };
