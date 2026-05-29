@@ -47,6 +47,13 @@ let
     fi
   '';
 
+  gimpWithPlugins = pkgs.gimp-with-plugins.override {
+    plugins = with pkgs.gimpPlugins; [
+      gmic
+      resynthesizer
+    ];
+  };
+
   archiveAndMediaPackages = with pkgs; [
     alacritty
     audacious
@@ -176,6 +183,7 @@ let
     font-awesome
     foomatic-db
     foot
+    gimpWithPlugins
     gamescope
     ghostty
     glaxnimate
