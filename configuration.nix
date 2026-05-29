@@ -151,7 +151,6 @@
     # startup IDs/secrets even if generated config is incomplete.
     environment = {
       OCIS_INSECURE = "true";
-      PROXY_TLS = "false";
       OCIS_LOG_LEVEL = "info";
 
       OCIS_JWT_SECRET = "6a6dbd4c0f1744a8b2e4b95d0f42f0a9";
