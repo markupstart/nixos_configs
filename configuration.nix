@@ -147,22 +147,9 @@
     url = "https://nixos:9200";
     configDir = "/var/lib/ocis/config";
 
-    # LAN-friendly bootstrap mode. These values ensure oCIS has all required
-    # startup IDs/secrets even if generated config is incomplete.
     environment = {
       OCIS_INSECURE = "true";
       OCIS_LOG_LEVEL = "info";
-
-      OCIS_JWT_SECRET = "6a6dbd4c0f1744a8b2e4b95d0f42f0a9";
-      OCIS_TRANSFER_SECRET = "7b8d4c35f20f4bb29f54d6e74c8a6a11";
-      OCIS_MACHINE_AUTH_API_KEY = "9ea9f0f8617246d6a856a7f2d58e14d1";
-      OCIS_SYSTEM_USER_API_KEY = "53f4d1c0d43f4a7c8f11a67b4c9ef3de";
-      OCIS_SYSTEM_USER_ID = "a3f4f8de-2cf5-4ef2-9c4d-ae5f6be6b0cb";
-      OCIS_SERVICE_ACCOUNT_ID = "f4f8d1ab-1d2a-4f2b-8f2d-f4f8d1ab1d2a";
-      OCIS_SERVICE_ACCOUNT_SECRET = "3c20ecf2d4b0465f987fa8d43d101f3c";
-      OCIS_STORAGE_USERS_MOUNT_ID = "e9c1fe5e-9e5b-4215-94f8-8bbf3b95e935";
-      GATEWAY_STORAGE_USERS_MOUNT_ID = "e9c1fe5e-9e5b-4215-94f8-8bbf3b95e935";
-      OCIS_ADMIN_USER_ID = "d1a8e8f0-6c95-4a1d-bc0b-227f4a7bb0aa";
     };
   };
 
