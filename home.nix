@@ -99,9 +99,7 @@ let
   ];
 
   audioPackages = with pkgs; [
-    pamixer
     pulsemixer
-    pw-volume
     audacious
     audacity
     cava
