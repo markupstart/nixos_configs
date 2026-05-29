@@ -113,6 +113,7 @@ let
     gawk
     jq
     mission-center
+    neovim
     socat
     tree
     which
