@@ -145,6 +145,7 @@
     address = "0.0.0.0";
     port = 9200;
     url = "http://nixos:9200";
+    environmentFile = "/var/lib/ocis/ocis.env";
 
     # LAN-friendly bootstrap mode. Put long-term secrets in environmentFile later.
     environment = {
@@ -355,6 +356,19 @@
       tmp_file="$(${pkgs.coreutils}/bin/mktemp)"
       ${pkgs.coreutils}/bin/printf 'SEARXNG_SECRET=%s\n' "$secret" > "$tmp_file"
       ${pkgs.coreutils}/bin/install -m 0600 "$tmp_file" "$secret_file"
+      ${pkgs.coreutils}/bin/rm -f "$tmp_file"
+    fi
+  '';
+
+  system.activationScripts.ocis-secret = ''
+    secret_file="/var/lib/ocis/ocis.env"
+
+    if [ ! -s "$secret_file" ] || ! ${pkgs.gnugrep}/bin/grep -q '^OCIS_JWT_SECRET=' "$secret_file"; then
+      ${pkgs.coreutils}/bin/install -d -m 0750 /var/lib/ocis
+      secret="$(${pkgs.openssl}/bin/openssl rand -hex 32)"
+      tmp_file="$(${pkgs.coreutils}/bin/mktemp)"
+      ${pkgs.coreutils}/bin/printf 'OCIS_JWT_SECRET=%s\n' "$secret" > "$tmp_file"
+      ${pkgs.coreutils}/bin/install -m 0640 "$tmp_file" "$secret_file"
       ${pkgs.coreutils}/bin/rm -f "$tmp_file"
     fi
   '';
