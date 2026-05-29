@@ -54,6 +54,29 @@ let
     ];
   };
 
+  davinciWithPlugins = pkgs.davinci-resolve-studio.overrideAttrs (
+    old:
+    let
+      baseBwrapArgs = old.extraBwrapArgs or [ ];
+      extrasBind =
+        if builtins.length baseBwrapArgs > 1 then
+          builtins.elemAt baseBwrapArgs 1
+        else
+          ''--bind "$HOME"/.local/share/DaVinciResolve/Extras /opt/resolve/Extras'';
+      extrasDest = builtins.elemAt (pkgs.lib.splitString " " extrasBind) 2;
+      ioPluginsDest = pkgs.lib.replaceStrings [ "/Extras" ] [ "/IOPlugins" ] extrasDest;
+    in
+    {
+      extraPreBwrapCmds = (old.extraPreBwrapCmds or "") + ''
+        mkdir -p "$HOME/Downloads/IOPlugins" || true
+      '';
+
+      extraBwrapArgs = baseBwrapArgs ++ [
+        ''--bind "$HOME"/Downloads/IOPlugins ${ioPluginsDest}''
+      ];
+    }
+  );
+
   blenderHip = pkgs.blender.override {
     rocmSupport = true;
   };
@@ -67,7 +90,6 @@ let
     catimg
     cava
     chafa
-    davinci-resolve-studio
     dconf-editor
     glib
     gnome-boxes
@@ -147,7 +169,6 @@ let
   productivityPackages = with pkgs; [
     bottom
     btop
-    clapper
     glow
     iftop
     owncloud-client
@@ -164,6 +185,12 @@ let
     bash-completion
     docker-compose
     ethtool
+    gst_all_1.gstreamer
+    gst_all_1.gst-plugins-base
+    gst_all_1.gst-plugins-good
+    gst_all_1.gst-plugins-bad
+    gst_all_1.gst-plugins-ugly
+    gst_all_1.gst-libav
     killall
     lm_sensors
     (lib.lowPrio mesa-demos)
@@ -241,7 +268,6 @@ let
     terminus_font
     thunderbird
     transmission_4-gtk
-    vlc
     vulkan-tools
     winetricks
     xwayland-satellite
@@ -254,6 +280,7 @@ let
 
   scriptPackages = [
     sysStatus
+    davinciWithPlugins
   ];
 in
 {
