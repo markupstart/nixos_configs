@@ -468,7 +468,7 @@ in
       clr = "clear && fastfetch";
       trashl = "trash-list";
       rm = "trash-put";
-      trashp = "trash-put -p";
+      trashp = "trash-put";
 
     };
   };
