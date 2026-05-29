@@ -82,6 +82,62 @@
 
   services.udev.enable = true;
   services.flatpak.enable = true;
+
+  services.searx = {
+    enable = true;
+    package = pkgs.searxng;
+    openFirewall = true;
+    redisCreateLocally = true;
+
+    settings = {
+      general = {
+        debug = false;
+        instance_name = "Mark SearXNG";
+      };
+
+      server = {
+        bind_address = "0.0.0.0";
+        port = 8888;
+        limiter = true;
+        public_instance = false;
+        image_proxy = true;
+        method = "GET";
+      };
+    };
+
+    # Keep bot protection on, but whitelist local ranges to avoid home/LAN lockouts.
+    limiterSettings = {
+      botdetection = {
+        ipv4_prefix = 32;
+        ipv6_prefix = 56;
+        trusted_proxies = [
+          "127.0.0.0/8"
+          "::1"
+        ];
+
+        ip_limit = {
+          filter_link_local = false;
+          link_token = false;
+        };
+
+        ip_lists = {
+          block_ip = [ ];
+          pass_ip = [
+            "127.0.0.0/8"
+            "10.0.0.0/8"
+            "172.16.0.0/12"
+            "192.168.0.0/16"
+            "100.64.0.0/10"
+            "::1"
+            "fd00::/8"
+            "fe80::/10"
+          ];
+          pass_searxng_org = true;
+        };
+      };
+    };
+  };
+
   virtualisation.docker.enable = true;
   virtualisation.oci-containers = {
     backend = "docker";
