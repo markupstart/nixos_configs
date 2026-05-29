@@ -117,6 +117,7 @@ let
     go
     jq
     imagemagick
+    localsend
     mission-center
     mermaid-cli
     neovim
