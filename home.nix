@@ -55,7 +55,7 @@ let
   };
 
   blenderHip = pkgs.blender.override {
-    hipSupport = true;
+    rocmSupport = true;
   };
 
   archiveAndMediaPackages = with pkgs; [
