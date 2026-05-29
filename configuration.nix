@@ -145,7 +145,7 @@
     address = "0.0.0.0";
     port = 9200;
     url = "http://nixos:9200";
-    environmentFile = "/var/lib/ocis/ocis.env";
+    configDir = "/var/lib/ocis/config";
 
     # LAN-friendly bootstrap mode. Put long-term secrets in environmentFile later.
     environment = {
@@ -360,28 +360,32 @@
     fi
   '';
 
-  system.activationScripts.ocis-secret = ''
-    secret_file="/var/lib/ocis/ocis.env"
+  system.activationScripts.ocis-bootstrap = ''
+    state_dir="/var/lib/ocis"
+    config_dir="$state_dir/config"
+    config_file="$config_dir/ocis.yaml"
+    admin_pw_file="$state_dir/admin-password"
 
-    ${pkgs.coreutils}/bin/install -d -m 0750 /var/lib/ocis
+    ${pkgs.coreutils}/bin/install -d -m 0750 -o ocis -g ocis "$state_dir"
+    ${pkgs.coreutils}/bin/install -d -m 0750 -o ocis -g ocis "$config_dir"
 
-    if [ ! -f "$secret_file" ]; then
-      ${pkgs.coreutils}/bin/touch "$secret_file"
-      ${pkgs.coreutils}/bin/chmod 0640 "$secret_file"
+    if [ ! -s "$admin_pw_file" ]; then
+      admin_pw="$(${pkgs.openssl}/bin/openssl rand -base64 24 | ${pkgs.coreutils}/bin/tr -dc 'A-Za-z0-9' | ${pkgs.coreutils}/bin/head -c 20)"
+      ${pkgs.coreutils}/bin/printf '%s\n' "$admin_pw" > "$admin_pw_file"
+      ${pkgs.coreutils}/bin/chown ocis:ocis "$admin_pw_file"
+      ${pkgs.coreutils}/bin/chmod 0600 "$admin_pw_file"
     fi
 
-    append_secret_if_missing() {
-      key="$1"
-      if ! ${pkgs.gnugrep}/bin/grep -q "^''${key}=" "$secret_file"; then
-        value="$(${pkgs.openssl}/bin/openssl rand -hex 32)"
-        ${pkgs.coreutils}/bin/printf '%s=%s\n' "$key" "$value" >> "$secret_file"
-      fi
-    }
+    if [ ! -s "$config_file" ]; then
+      admin_pw="$(${pkgs.coreutils}/bin/cat "$admin_pw_file")"
+      ${config.services.ocis.package}/bin/ocis init \
+        --insecure true \
+        --config-path "$config_file" \
+        --admin-password "$admin_pw"
 
-    append_secret_if_missing "OCIS_JWT_SECRET"
-    append_secret_if_missing "OCIS_TRANSFER_SECRET"
-    append_secret_if_missing "OCIS_MACHINE_AUTH_API_KEY"
-    append_secret_if_missing "OCIS_SYSTEM_USER_API_KEY"
+      ${pkgs.coreutils}/bin/chown ocis:ocis "$config_file"
+      ${pkgs.coreutils}/bin/chmod 0640 "$config_file"
+    fi
   '';
 
   systemd.tmpfiles.rules = [
