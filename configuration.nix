@@ -363,14 +363,25 @@
   system.activationScripts.ocis-secret = ''
     secret_file="/var/lib/ocis/ocis.env"
 
-    if [ ! -s "$secret_file" ] || ! ${pkgs.gnugrep}/bin/grep -q '^OCIS_JWT_SECRET=' "$secret_file"; then
-      ${pkgs.coreutils}/bin/install -d -m 0750 /var/lib/ocis
-      secret="$(${pkgs.openssl}/bin/openssl rand -hex 32)"
-      tmp_file="$(${pkgs.coreutils}/bin/mktemp)"
-      ${pkgs.coreutils}/bin/printf 'OCIS_JWT_SECRET=%s\n' "$secret" > "$tmp_file"
-      ${pkgs.coreutils}/bin/install -m 0640 "$tmp_file" "$secret_file"
-      ${pkgs.coreutils}/bin/rm -f "$tmp_file"
+    ${pkgs.coreutils}/bin/install -d -m 0750 /var/lib/ocis
+
+    if [ ! -f "$secret_file" ]; then
+      ${pkgs.coreutils}/bin/touch "$secret_file"
+      ${pkgs.coreutils}/bin/chmod 0640 "$secret_file"
     fi
+
+    append_secret_if_missing() {
+      key="$1"
+      if ! ${pkgs.gnugrep}/bin/grep -q "^''${key}=" "$secret_file"; then
+        value="$(${pkgs.openssl}/bin/openssl rand -hex 32)"
+        ${pkgs.coreutils}/bin/printf '%s=%s\n' "$key" "$value" >> "$secret_file"
+      fi
+    }
+
+    append_secret_if_missing "OCIS_JWT_SECRET"
+    append_secret_if_missing "OCIS_TRANSFER_SECRET"
+    append_secret_if_missing "OCIS_MACHINE_AUTH_API_KEY"
+    append_secret_if_missing "OCIS_SYSTEM_USER_API_KEY"
   '';
 
   systemd.tmpfiles.rules = [
