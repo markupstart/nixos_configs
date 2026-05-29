@@ -140,6 +140,20 @@
     };
   };
 
+  services.ocis = {
+    enable = true;
+    address = "0.0.0.0";
+    port = 9200;
+    url = "http://nixos:9200";
+
+    # LAN-friendly bootstrap mode. Put long-term secrets in environmentFile later.
+    environment = {
+      OCIS_INSECURE = "true";
+      PROXY_TLS = "false";
+      OCIS_LOG_LEVEL = "info";
+    };
+  };
+
   virtualisation.docker.enable = true;
   virtualisation.oci-containers = {
     backend = "docker";
@@ -175,6 +189,7 @@
     allowedTCPPorts = [
       8096
       8920
+      9200
     ];
     allowedUDPPorts = [
       7359
