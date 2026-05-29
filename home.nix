@@ -101,7 +101,6 @@ let
 
   audioPackages = with pkgs; [
     pulsemixer
-    audacious
     audacity
     cava
     mpd
@@ -167,7 +166,6 @@ let
     ipcalc
     localsend
     nmap
-    rssguard
     socat
     transmission_4-gtk
   ];
@@ -189,8 +187,6 @@ let
     bazecor
     bibata-cursors
     cups-filters
-    dconf
-    dconf-editor
     font-awesome
     foomatic-db
     gnome-keyring
@@ -198,10 +194,7 @@ let
     mate-icon-theme
     mate-themes
     matugen
-    mint-themes
-    mint-y-icons
     nordzy-cursor-theme
-    numix-cursor-theme
     nwg-look
     power-profiles-daemon
     roboto
