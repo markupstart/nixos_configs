@@ -82,10 +82,11 @@ let
     rocmSupport = true;
   };
 
-  VideoPackages = with pkgs; [
+  videoPackages = with pkgs; [
     ffmpeg
     gpu-screen-recorder-gtk
     kdePackages.kdenlive
+    handbrake
     makemkv
     mpv
     obs-studio
@@ -103,7 +104,6 @@ let
     audacious
     audacity
     cava
-    handbrake
     mpd
     rmpc
   ];
@@ -313,7 +313,7 @@ in
 
   # Packages that should be installed to the user profile.
   home.packages =
-    VideoPackages
+    videoPackages
     ++ audioPackages
     ++ developmentPackages
     ++ educationPackages
