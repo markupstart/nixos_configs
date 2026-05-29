@@ -228,7 +228,6 @@ let
     inxi
     iotop
     killall
-    kitty
     lm_sensors
     lsof
     ltrace
