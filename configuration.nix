@@ -162,6 +162,7 @@
       OCIS_SERVICE_ACCOUNT_ID = "f4f8d1ab-1d2a-4f2b-8f2d-f4f8d1ab1d2a";
       OCIS_SERVICE_ACCOUNT_SECRET = "3c20ecf2d4b0465f987fa8d43d101f3c";
       OCIS_STORAGE_USERS_MOUNT_ID = "e9c1fe5e-9e5b-4215-94f8-8bbf3b95e935";
+      GATEWAY_STORAGE_USERS_MOUNT_ID = "e9c1fe5e-9e5b-4215-94f8-8bbf3b95e935";
       OCIS_ADMIN_USER_ID = "d1a8e8f0-6c95-4a1d-bc0b-227f4a7bb0aa";
     };
   };
@@ -389,13 +390,14 @@
 
     if [ ! -s "$config_file" ]; then
       admin_pw="$(${pkgs.coreutils}/bin/cat "$admin_pw_file")"
-      ${config.services.ocis.package}/bin/ocis init \
-        --insecure true \
-        --config-path "$config_file" \
-        --admin-password "$admin_pw"
+      ${pkgs.util-linux}/bin/runuser -u ocis -- \
+        ${config.services.ocis.package}/bin/ocis init \
+          --insecure true \
+          --config-path "$config_file" \
+          --admin-password "$admin_pw"
 
-      ${pkgs.coreutils}/bin/chown ocis:ocis "$config_file"
-      ${pkgs.coreutils}/bin/chmod 0640 "$config_file"
+      ${pkgs.coreutils}/bin/chown ocis:ocis "$config_file" 2>/dev/null || true
+      ${pkgs.coreutils}/bin/chmod 0640 "$config_file" 2>/dev/null || true
     fi
   '';
 
