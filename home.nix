@@ -466,6 +466,9 @@ in
       rsi = "rsi-launcher-niri";
       grep = "grep --color=auto";
       clr = "clear && fastfetch";
+      trashl = "trash-list";
+      rm = "trash-put";
+      trashp = "trash-put -p";
 
     };
   };
