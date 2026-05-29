@@ -488,7 +488,7 @@ in
       listening = "ss -tulnp";
       nsw = "sudo nixos-rebuild switch --flake ~/nixos_configs#nixos";
       ntest = "sudo nixos-rebuild test --flake ~/nixos_configs#nixos";
-      nup = "nix flake update ~/nixos_configs && sudo nixos-rebuild switch --flake ~/nixos_configs#nixos";
+      nup = "nix flake update --flake ~/nixos_configs && sudo nixos-rebuild switch --flake ~/nixos_configs#nixos";
       ngc = "nix-collect-garbage -d && sudo nix-collect-garbage -d";
       ncheck = "sudo nixos-rebuild dry-build --flake ~/nixos_configs#nixos";
       stat = "sys-status";
