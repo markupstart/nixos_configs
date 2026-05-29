@@ -54,6 +54,10 @@ let
     ];
   };
 
+  blenderHip = pkgs.blender.override {
+    hipSupport = true;
+  };
+
   archiveAndMediaPackages = with pkgs; [
     alacritty
     audacious
@@ -166,7 +170,7 @@ let
     adwaita-qt
     adwaita-qt6
     bibata-cursors
-    blender
+    blenderHip
     boxbuddy
     cups-filters
     darktable
@@ -303,6 +307,9 @@ in
   home.sessionVariables = {
     # Prefer native Wayland backend for Electron apps like VS Code.
     NIXOS_OZONE_WL = "1";
+    # Required for Blender HIP rendering on Navi 31 (RX 7900 XTX = gfx1100)
+    HSA_OVERRIDE_GFX_VERSION = "11.0.0";
+    ROC_ENABLE_PRE_VEGA = "1";
   };
 
   programs.vscode = {
