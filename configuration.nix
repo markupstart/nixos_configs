@@ -161,7 +161,7 @@
       OCIS_SYSTEM_USER_ID = "a3f4f8de-2cf5-4ef2-9c4d-ae5f6be6b0cb";
       OCIS_SERVICE_ACCOUNT_ID = "f4f8d1ab-1d2a-4f2b-8f2d-f4f8d1ab1d2a";
       OCIS_SERVICE_ACCOUNT_SECRET = "3c20ecf2d4b0465f987fa8d43d101f3c";
-      STORAGE_USERS_MOUNT_ID = "e9c1fe5e-9e5b-4215-94f8-8bbf3b95e935";
+      OCIS_STORAGE_USERS_MOUNT_ID = "e9c1fe5e-9e5b-4215-94f8-8bbf3b95e935";
       OCIS_ADMIN_USER_ID = "d1a8e8f0-6c95-4a1d-bc0b-227f4a7bb0aa";
     };
   };
