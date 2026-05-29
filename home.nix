@@ -1,7 +1,7 @@
 { pkgs, inputs, ... }:
 
 let
-  rsiLauncherPkg = inputs.nix-citizen.packages.${pkgs.system}.rsi-launcher;
+  rsiLauncherPkg = inputs.nix-citizen.packages.${pkgs.stdenv.hostPlatform.system}.rsi-launcher;
   rsiLauncherNiri = pkgs.writeShellScriptBin "rsi-launcher-niri" ''
     export MESA_VK_WSI_PRESENT_MODE=mailbox
     export MANGOHUD=1
@@ -244,14 +244,15 @@ in
       user.email = "mark@upstarters.com";
       credential.helper = "${pkgs.git.override { withLibsecret = true; }}/bin/git-credential-libsecret";
     };
+  };
 
-    delta = {
-      enable = true;
-      options = {
-        line-numbers = true;
-        navigate = true;
-        side-by-side = true;
-      };
+  programs.delta = {
+    enable = true;
+    enableGitIntegration = true;
+    options = {
+      line-numbers = true;
+      navigate = true;
+      side-by-side = true;
     };
   };
 
