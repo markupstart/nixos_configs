@@ -144,7 +144,7 @@
     enable = true;
     address = "0.0.0.0";
     port = 9200;
-    url = "http://nixos:9200";
+    url = "https://nixos:9200";
     configDir = "/var/lib/ocis/config";
 
     # LAN-friendly bootstrap mode. These values ensure oCIS has all required
