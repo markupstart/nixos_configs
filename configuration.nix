@@ -96,6 +96,10 @@
         instance_name = "Mark SearXNG";
       };
 
+      preferences = {
+        lock = [ "categories" ];
+      };
+
       server = {
         bind_address = "0.0.0.0";
         port = 8888;
