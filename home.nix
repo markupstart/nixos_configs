@@ -77,6 +77,7 @@ let
     libnotify
     micro
     mpd
+    mpv
     ollama-rocm
     p7zip
     pamixer
