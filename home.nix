@@ -1,12 +1,14 @@
 { pkgs, inputs, ... }:
 
 let
-  rsiLauncherPkg = inputs.nix-citizen.packages.${pkgs.stdenv.hostPlatform.system}.rsi-launcher.override {
-    extraEnvVars = {
-      MESA_VK_WSI_PRESENT_MODE = "mailbox";
-      MANGOHUD = "1";
-    };
-  };
+  rsiLauncherPkg =
+    inputs.nix-citizen.packages.${pkgs.stdenv.hostPlatform.system}.rsi-launcher.override
+      {
+        extraEnvVars = {
+          MESA_VK_WSI_PRESENT_MODE = "mailbox";
+          MANGOHUD = "1";
+        };
+      };
 
   sysStatus = pkgs.writeShellScriptBin "sys-status" ''
     #!/usr/bin/env bash
@@ -80,197 +82,196 @@ let
     rocmSupport = true;
   };
 
-  archiveAndMediaPackages = with pkgs; [
-    alacritty
-    audacious
-    audacity
-    bazecor
-    cabextract
-    catimg
-    cava
-    chafa
-    dconf-editor
-    glib
-    gnome-boxes
-    handbrake
-    inotify-tools
-    kitty
-    libnotify
-    micro
-    mpd
-    mpv
-    ollama-rocm
-    p7zip
-    pamixer
-    pavucontrol
-    ripdrag
-    rmpc
-    rssguard
-    swayimg
-    trash-cli
-    unzip
-    v4l-utils
-    xz
-    yazi
-    zenity
-    zip
-    dgop
-    fprintd
-  ];
-
-  utilityPackages = with pkgs; [
-    bat
-    delta
-    fd
-    dust
-    cargo
-    cliphist
-    ripgrep
-    dnsmasq
-    direnv
-    ipcalc
-    nmap
-    curl
-    exiftool
-    file
-    gawk
-    gh
-    go
-    jq
-    imagemagick
-    localsend
-    mission-center
-    mermaid-cli
-    neovim
-    nodejs
-    socat
-    tectonic
-    tree
-    which
-    zstd
-  ];
-
-  nixPackages = with pkgs; [
-    comma
-    deadnix
-    inxi
-    nh
-    nix-tree
-    nixd
-    nix-direnv
-    nixfmt
-    nvd
-    nitch
-    nix-output-monitor
-    statix
-  ];
-
-  productivityPackages = with pkgs; [
-    bottom
-    btop
-    glow
-    iftop
-    owncloud-client
-  ];
-
-  monitoringPackages = with pkgs; [
-    iotop
-    lsof
-    ltrace
-    strace
-  ];
-
-  systemPackages = with pkgs; [
-    bash-completion
-    docker-compose
-    ethtool
-    gst_all_1.gstreamer
-    gst_all_1.gst-plugins-base
-    gst_all_1.gst-plugins-good
-    gst_all_1.gst-plugins-bad
-    gst_all_1.gst-plugins-ugly
-    gst_all_1.gst-libav
-    killall
-    libva-utils
-    lm_sensors
-    (lib.lowPrio mesa-demos)
-    nixos-generators
-    pciutils
-    smartmontools
-    sysstat
-    usbutils
-    wl-clipboard
-  ];
-
-  desktopAppPackages = with pkgs; [
-    adwaita-icon-theme
-    adwaita-qt
-    adwaita-qt6
-    bibata-cursors
-    blenderHip
-    boxbuddy
-    cups-filters
-    darktable
-    dconf
-    discord
-    distrobox
-    element-desktop
-    engrampa
-    extremetuxracer
-    fastfetch
+  VideoPackages = with pkgs; [
     ffmpeg
-    firefox
-    fish
-    font-awesome
-    foomatic-db
-    foot
-    gimpWithPlugins
-    gamescope
-    ghostty
-    glaxnimate
-    gnome-keyring
-    grc
     gpu-screen-recorder-gtk
-    htop
-    inkscape
     kdePackages.kdenlive
-    libreoffice-fresh
-    lutris
     makemkv
-    mako
-    mangohud
-    mate-icon-theme
-    mate-themes
-    matugen
-    mint-themes
-    mint-y-icons
-    mousepad
-    nautilus
-    nordzy-cursor-theme
-    numix-cursor-theme
-    nwg-look
+    mpv
     obs-studio
     obs-studio-plugins.obs-gstreamer
     obs-studio-plugins.obs-pipewire-audio-capture
     obs-studio-plugins.obs-vaapi
     obs-studio-plugins.obs-vkcapture
     obs-studio-plugins.wlrobs
-    papers
-    power-profiles-daemon
+    libva-utils
+    v4l-utils
+  ];
+
+  audioPackages = with pkgs; [
+    pamixer
     pulsemixer
     pw-volume
-    qalculate-gtk
-    roboto
-    scribus
+    audacious
+    audacity
+    cava
+    handbrake
+    mpd
+    rmpc
+  ];
+
+  developmentPackages = with pkgs; [
+    cargo
+    comma
+    deadnix
+    delta
+    direnv
+    gh
+    go
+    mermaid-cli
+    micro
+    neovim
+    nh
+    nix-tree
+    nixd
+    nix-direnv
+    nix-output-monitor
+    nixfmt
+    nitch
+    nodejs
+    nvd
+    statix
+    tectonic
+  ];
+
+  educationPackages = with pkgs; [ ];
+
+  healthFitnessPackages = [ ];
+
+  gamePackages = with pkgs; [
+    extremetuxracer
+    mangohud
     supertux
     supertuxkart
+    winetricks
+  ];
+
+  graphicsPackages = with pkgs; [
+    blenderHip
+    catimg
+    chafa
+    darktable
+    exiftool
+    gimpWithPlugins
+    glaxnimate
+    imagemagick
+    inkscape
+    scribus
+    swayimg
+  ];
+
+  networkPackages = with pkgs; [
+    curl
+    discord
+    dnsmasq
+    element-desktop
+    firefox
+    ipcalc
+    localsend
+    nmap
+    rssguard
+    socat
+    transmission_4-gtk
+  ];
+
+  officePackages = with pkgs; [
+    libreoffice-fresh
+    mousepad
+    owncloud-client
+    papers
+    thunderbird
+  ];
+
+  sciencePackages = [ ];
+
+  settingsPackages = with pkgs; [
+    adwaita-icon-theme
+    adwaita-qt
+    adwaita-qt6
+    bazecor
+    bibata-cursors
+    cups-filters
+    dconf
+    dconf-editor
+    font-awesome
+    foomatic-db
+    gnome-keyring
+    mako
+    mate-icon-theme
+    mate-themes
+    matugen
+    mint-themes
+    mint-y-icons
+    nordzy-cursor-theme
+    numix-cursor-theme
+    nwg-look
+    power-profiles-daemon
+    roboto
     system-config-printer
     terminus_font
-    thunderbird
-    transmission_4-gtk
+  ];
+
+  systemCategoryPackages = with pkgs; [
+    bash-completion
+    bat
+    bottom
+    btop
+    dgop
+    distrobox
+    docker-compose
+    ethtool
+    fastfetch
+    fprintd
+    gnome-boxes
+    ghostty
+    grc
+    iftop
+    inotify-tools
+    inxi
+    iotop
+    killall
+    kitty
+    lm_sensors
+    lsof
+    ltrace
+    mission-center
+    nixos-generators
+    ollama-rocm
+    pciutils
+    smartmontools
+    strace
+    sysstat
+    usbutils
     vulkan-tools
-    winetricks
+    wl-clipboard
     xwayland-satellite
+    (lib.lowPrio mesa-demos)
+  ];
+
+  utilityPackages = with pkgs; [
+    cliphist
+    dust
+    engrampa
+    fd
+    file
+    gawk
+    glib
+    glow
+    jq
+    libnotify
+    p7zip
+    qalculate-gtk
+    ripdrag
+    ripgrep
+    trash-cli
+    tree
+    unzip
+    which
+    xz
+    yazi
+    zenity
+    zip
+    zstd
   ];
 
   launcherPackages = [
@@ -314,13 +315,19 @@ in
 
   # Packages that should be installed to the user profile.
   home.packages =
-    archiveAndMediaPackages
+    VideoPackages
+    ++ audioPackages
+    ++ developmentPackages
+    ++ educationPackages
+    ++ healthFitnessPackages
+    ++ gamePackages
+    ++ graphicsPackages
+    ++ networkPackages
+    ++ officePackages
+    ++ sciencePackages
+    ++ settingsPackages
+    ++ systemCategoryPackages
     ++ utilityPackages
-    ++ nixPackages
-    ++ productivityPackages
-    ++ monitoringPackages
-    ++ systemPackages
-    ++ desktopAppPackages
     ++ launcherPackages
     ++ scriptPackages;
 
