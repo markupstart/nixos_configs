@@ -83,9 +83,47 @@
   services.udev.enable = true;
   services.flatpak.enable = true;
   virtualisation.docker.enable = true;
+  virtualisation.oci-containers = {
+    backend = "docker";
+    containers.jellyfin = {
+      image = "jellyfin/jellyfin:latest";
+      autoStart = true;
+      environment = {
+        TZ = "America/New_York";
+      };
+      ports = [
+        "8096:8096"
+        "8920:8920"
+        "7359:7359/udp"
+        "1900:1900/udp"
+      ];
+      volumes = [
+        "/opt/jellyfin/config:/config"
+        "/opt/jellyfin/cache:/cache"
+        "/home/mark/media:/media/movies:ro"
+        "/home/mark/Music:/media/music:ro"
+      ];
+      extraOptions = [
+        "--user=1000:1000"
+        "--device=/dev/dri:/dev/dri"
+        "--restart=unless-stopped"
+      ];
+    };
+  };
   virtualisation.waydroid.enable = true;
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
+
+  networking.firewall = {
+    allowedTCPPorts = [
+      8096
+      8920
+    ];
+    allowedUDPPorts = [
+      7359
+      1900
+    ];
+  };
 
   programs.nix-ld.enable = true;
   programs.zsh.enable = true;
@@ -238,6 +276,9 @@
   #HIP corrections
   systemd.tmpfiles.rules = [
     "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.rocmPackages.clr}"
+    "d /opt/jellyfin 0755 1000 1000 -"
+    "d /opt/jellyfin/config 0755 1000 1000 -"
+    "d /opt/jellyfin/cache 0755 1000 1000 -"
   ];
 
   nixpkgs.overlays = [
