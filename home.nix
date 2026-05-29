@@ -369,6 +369,14 @@ in
     enableCompletion = true;
     autocd = true;
 
+    plugins = [
+      {
+        name = "zsh-autopair";
+        src = pkgs.zsh-autopair;
+        file = "share/zsh/zsh-autopair/autopair.zsh";
+      }
+    ];
+
     completionInit = "autoload -U compinit && compinit -d ~/.cache/zsh/zcompdump-$ZSH_VERSION";
 
     setOptions = [
@@ -392,7 +400,6 @@ in
       enable = true;
       theme = "intheloop";
       plugins = [
-        "autopair"
         "colored-man-pages"
         "command-not-found"
         "fzf"
