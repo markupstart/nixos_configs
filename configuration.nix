@@ -76,9 +76,15 @@
 
   virtualisation.containers.enable = true;
 
-  services.udev.extraRules = ''
-    KERNEL=="hidraw*", ATTRS{idVendor}=="231d", ATTRS{idProduct}=="*", MODE="0660", TAG+="uaccess"
-  '';
+  services.udev.packages = [
+    (pkgs.writeTextFile {
+      name = "40-starcitizen-joystick-uaccess.rules";
+      destination = "/lib/udev/rules.d/40-starcitizen-joystick-uaccess.rules";
+      text = ''
+        KERNEL=="hidraw*", ATTRS{idVendor}=="231d|3344|044f", ATTRS{idProduct}=="*", MODE="0660", TAG+="uaccess"
+      '';
+    })
+  ];
 
   services.udev.enable = true;
   services.flatpak.enable = true;
