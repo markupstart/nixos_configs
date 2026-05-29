@@ -88,6 +88,7 @@
     package = pkgs.searxng;
     openFirewall = true;
     redisCreateLocally = true;
+    environmentFile = "/var/lib/searx/searxng.env";
 
     settings = {
       general = {
@@ -98,6 +99,7 @@
       server = {
         bind_address = "0.0.0.0";
         port = 8888;
+        secret_key = "$SEARXNG_SECRET";
         limiter = true;
         public_instance = false;
         image_proxy = true;
@@ -329,6 +331,19 @@
   hardware.graphics.enable32Bit = true; # For 32 bit applications
 
   #HIP corrections
+  system.activationScripts.searxng-secret = ''
+    secret_file="/var/lib/searx/searxng.env"
+
+    if [ ! -s "$secret_file" ] || ! ${pkgs.gnugrep}/bin/grep -q '^SEARXNG_SECRET=' "$secret_file"; then
+      ${pkgs.coreutils}/bin/install -d -m 0700 /var/lib/searx
+      secret="$(${pkgs.openssl}/bin/openssl rand -hex 32)"
+      tmp_file="$(${pkgs.coreutils}/bin/mktemp)"
+      ${pkgs.coreutils}/bin/printf 'SEARXNG_SECRET=%s\n' "$secret" > "$tmp_file"
+      ${pkgs.coreutils}/bin/install -m 0600 "$tmp_file" "$secret_file"
+      ${pkgs.coreutils}/bin/rm -f "$tmp_file"
+    fi
+  '';
+
   systemd.tmpfiles.rules = [
     "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.rocmPackages.clr}"
     "d /opt/jellyfin 0755 1000 1000 -"
