@@ -10,14 +10,7 @@ This guide starts from a fresh NixOS install and gets you to a running system us
 
 1. Boot the NixOS installer ISO.
 2. Partition, format, and mount disks.
-
-3. Do a normal first install so the machine can boot:
-
-```bash
-sudo nixos-install --root /mnt
-```
-
-4. Reboot into the installed system.
+3. Reboot into the installed system.
 
 ### 2. Prepare the New System
 
