@@ -85,7 +85,6 @@ let
   videoPackages = with pkgs; [
     ffmpeg
     gpu-screen-recorder-gtk
-    kdePackages.kdenlive
     handbrake
     makemkv
     mpv
@@ -181,11 +180,9 @@ let
   sciencePackages = [ ];
 
   settingsPackages = with pkgs; [
-    adwaita-icon-theme
     adwaita-qt
     adwaita-qt6
     bazecor
-    bibata-cursors
     cups-filters
     font-awesome
     foomatic-db
@@ -208,8 +205,6 @@ let
     bottom
     btop
     dgop
-    distrobox
-    docker-compose
     ethtool
     fastfetch
     fprintd
@@ -248,8 +243,6 @@ let
     glib
     glow
     jq
-    libnotify
-    p7zip
     qalculate-gtk
     ripdrag
     ripgrep
@@ -259,8 +252,6 @@ let
     which
     xz
     yazi
-    zenity
-    zip
     zstd
   ];
 
