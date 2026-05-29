@@ -106,7 +106,6 @@
       extraOptions = [
         "--user=1000:1000"
         "--device=/dev/dri:/dev/dri"
-        "--restart=unless-stopped"
       ];
     };
   };
