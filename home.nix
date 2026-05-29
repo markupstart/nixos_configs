@@ -4,10 +4,9 @@ let
   rsiLauncherPkg =
     inputs.nix-citizen.packages.${pkgs.stdenv.hostPlatform.system}.rsi-launcher.override
       {
+        includeMangoHud = true;
         extraEnvVars = {
           MESA_VK_WSI_PRESENT_MODE = "mailbox";
-          MANGOHUD = "1";
-          MANGOHUD_DLSYM = "1";
         };
       };
 
