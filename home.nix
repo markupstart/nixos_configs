@@ -101,6 +101,7 @@ let
     delta
     fd
     dust
+    cargo
     cliphist
     ripgrep
     dnsmasq
@@ -111,10 +112,16 @@ let
     exiftool
     file
     gawk
+    gh
+    go
     jq
+    imagemagick
     mission-center
+    mermaid-cli
     neovim
+    nodejs
     socat
+    tectonic
     tree
     which
     zstd
