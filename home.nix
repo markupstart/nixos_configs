@@ -187,7 +187,6 @@ let
     font-awesome
     foomatic-db
     gnome-keyring
-    mako
     mate-icon-theme
     mate-themes
     matugen
