@@ -381,6 +381,12 @@
     ${pkgs.coreutils}/bin/install -d -m 0750 -o ocis -g ocis "$state_dir"
     ${pkgs.coreutils}/bin/install -d -m 0750 -o ocis -g ocis "$config_dir"
 
+    # Clean up broken state from previous runs where --config-path was given a
+    # file path; ocis init treats it as a directory and creates ocis.yaml/ocis.yaml.
+    if [ -d "$config_file" ]; then
+      ${pkgs.coreutils}/bin/rm -rf "$config_file"
+    fi
+
     if [ ! -s "$admin_pw_file" ]; then
       admin_pw="$(${pkgs.openssl}/bin/openssl rand -base64 24 | ${pkgs.coreutils}/bin/tr -dc 'A-Za-z0-9' | ${pkgs.coreutils}/bin/head -c 20)"
       ${pkgs.coreutils}/bin/printf '%s\n' "$admin_pw" > "$admin_pw_file"
@@ -390,14 +396,12 @@
 
     if [ ! -s "$config_file" ]; then
       admin_pw="$(${pkgs.coreutils}/bin/cat "$admin_pw_file")"
+      # --config-path takes a directory; ocis init writes ocis.yaml inside it.
       ${pkgs.util-linux}/bin/runuser -u ocis -- \
         ${config.services.ocis.package}/bin/ocis init \
           --insecure true \
-          --config-path "$config_file" \
+          --config-path "$config_dir" \
           --admin-password "$admin_pw"
-
-      ${pkgs.coreutils}/bin/chown ocis:ocis "$config_file" 2>/dev/null || true
-      ${pkgs.coreutils}/bin/chmod 0640 "$config_file" 2>/dev/null || true
     fi
   '';
 
