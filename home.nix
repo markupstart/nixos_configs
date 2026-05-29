@@ -1,13 +1,15 @@
 { pkgs, inputs, ... }:
 
 let
-  rsiLauncherPkg = inputs.nix-citizen.packages.${pkgs.stdenv.hostPlatform.system}.rsi-launcher;
-  rsiLauncherNiri = pkgs.writeShellScriptBin "rsi-launcher-niri" ''
-    export MESA_VK_WSI_PRESENT_MODE=mailbox
-    export MANGOHUD=1
-    export MANGOHUD_DLSYM=1
-    exec ${rsiLauncherPkg}/bin/rsi-launcher "$@"
-  '';
+  rsiLauncherPkg =
+    inputs.nix-citizen.packages.${pkgs.stdenv.hostPlatform.system}.rsi-launcher.override
+      {
+        extraEnvVars = {
+          MESA_VK_WSI_PRESENT_MODE = "mailbox";
+          MANGOHUD = "1";
+          MANGOHUD_DLSYM = "1";
+        };
+      };
 
   sysStatus = pkgs.writeShellScriptBin "sys-status" ''
     #!/usr/bin/env bash
@@ -276,7 +278,6 @@ let
 
   launcherPackages = [
     rsiLauncherPkg
-    rsiLauncherNiri
   ];
 
   scriptPackages = [
@@ -325,22 +326,6 @@ in
     ++ desktopAppPackages
     ++ launcherPackages
     ++ scriptPackages;
-
-  xdg.desktopEntries.rsi-launcher-niri = {
-    name = "RSI Launcher (Niri)";
-    genericName = "Star Citizen Launcher";
-    comment = "Launch RSI Launcher with Niri-specific Vulkan present mode";
-    exec = "rsi-launcher-niri %U";
-    terminal = false;
-    categories = [ "Game" ];
-    icon = "rsi-launcher";
-  };
-
-  # Hide upstream launcher entry so only the Niri wrapper appears in app launchers.
-  xdg.desktopEntries.rsi-launcher = {
-    name = "RSI Launcher";
-    noDisplay = true;
-  };
 
   home.sessionVariables = {
     # Prefer native Wayland backend for Electron apps like VS Code.
@@ -492,7 +477,7 @@ in
       ngc = "nix-collect-garbage -d && sudo nix-collect-garbage -d";
       ncheck = "sudo nixos-rebuild dry-build --flake ~/nixos_configs#nixos";
       stat = "sys-status";
-      rsi = "rsi-launcher-niri";
+      rsi = "rsi-launcher";
       grep = "grep --color=auto";
       clr = "clear && fastfetch";
       trashl = "trash-list";
