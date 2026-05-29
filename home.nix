@@ -447,6 +447,7 @@ in
       rsi = "rsi-launcher-niri";
       grep = "grep --color=auto";
       clr = "clear && fastfetch";
+      gc = "git add . && git commit -m '$*' && git push";
     };
   };
 
