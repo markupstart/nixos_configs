@@ -192,6 +192,7 @@ let
     gst_all_1.gst-plugins-ugly
     gst_all_1.gst-libav
     killall
+    libva-utils
     lm_sensors
     (lib.lowPrio mesa-demos)
     nixos-generators
