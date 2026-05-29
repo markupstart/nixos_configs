@@ -100,7 +100,7 @@
         bind_address = "0.0.0.0";
         port = 8888;
         secret_key = "$SEARXNG_SECRET";
-        limiter = true;
+        limiter = false;
         public_instance = false;
         image_proxy = true;
         method = "GET";
