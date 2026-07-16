@@ -9,6 +9,16 @@
   ...
 }:
 
+let
+  audiomuseaiPlugin = pkgs.runCommand "audiomuseai" { } ''
+    install -Dm444 \
+      ${pkgs.fetchurl {
+        url = "https://github.com/NeptuneHub/AudioMuse-AI-NV-plugin/releases/latest/download/audiomuseai.ndp";
+        hash = "sha256-hOanUJBKgsW+p2gZgHEhN64lS0oUlsu8mXTaseSzndg=";
+      }} \
+      "$out/share/audiomuseai.ndp"
+  '';
+in
 {
   imports = [
     # Include the results of the hardware scan.
@@ -108,6 +118,14 @@
   services.flatpak.enable = true;
   services.navidrome = {
     enable = true;
+    plugins = [
+      pkgs.navidromePlugins.apple-music
+      (audiomuseaiPlugin
+        // {
+          isNavidromePlugin = true;
+          pname = "audiomuseai";
+        })
+    ];
     settings = {
       Address = "0.0.0.0";
       MusicFolder = "/mnt/audio/music";
@@ -118,7 +136,6 @@
       Agents = "audiomuseai,apple-music,lastfm,deezer";
 
       Plugins.Enabled = true;
-      Plugins.Folder = "/var/lib/navidrome/plugins";
       Plugins.AutoReload = true;
     };
     openFirewall = true;
