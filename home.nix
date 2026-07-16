@@ -203,7 +203,6 @@ let
   systemCategoryPackages = with pkgs; [
     bash-completion
     bat
-    bitwarden-desktop
     bottom
     btop
     dgop
