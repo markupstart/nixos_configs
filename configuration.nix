@@ -45,7 +45,10 @@
   #Bootloader.
   boot = {
     tmp.cleanOnBoot = true;
-    supportedFilesystems = [ "ntfs" ];
+    supportedFilesystems = [
+      "ntfs"
+      "btrfs"
+    ];
     loader = {
       systemd-boot.configurationLimit = 10;
       timeout = 2;
@@ -73,6 +76,18 @@
 
   #network host name
   networking.hostName = "nixos";
+
+  # Personal data drive mounted separately from the system disk.
+  fileSystems."/home/mark/docs" = {
+    device = "/dev/disk/by-uuid/f9e3bf3d-6c7a-4bd8-8734-5ced340a6161";
+    fsType = "btrfs";
+    options = [
+      "nofail"
+      "compress=zstd:3"
+      "x-systemd.automount"
+      "x-systemd.device-timeout=10s"
+    ];
+  };
 
   virtualisation.containers.enable = true;
 

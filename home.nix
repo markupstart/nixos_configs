@@ -1,4 +1,4 @@
-{ pkgs, inputs, ... }:
+{ config, pkgs, inputs, ... }:
 
 let
   rsiLauncherPkg =
@@ -266,6 +266,91 @@ in
 {
   home.username = "mark";
   home.homeDirectory = "/home/mark";
+
+  xdg.userDirs = {
+    enable = true;
+    createDirectories = false;
+    desktop = "/home/mark/docs/Desktop";
+    documents = "/home/mark/docs/Documents";
+    download = "/home/mark/docs/Downloads";
+    music = "/home/mark/docs/Music";
+    pictures = "/home/mark/docs/Pictures";
+    publicShare = "/home/mark/docs/Public";
+    templates = "/home/mark/docs/Templates";
+    videos = "/home/mark/docs/Videos";
+  };
+
+  home.file = {
+    "Desktop" = {
+      source = config.lib.file.mkOutOfStoreSymlink "/home/mark/docs/Desktop";
+      force = true;
+    };
+    "Documents" = {
+      source = config.lib.file.mkOutOfStoreSymlink "/home/mark/docs/Documents";
+      force = true;
+    };
+    "Downloads" = {
+      source = config.lib.file.mkOutOfStoreSymlink "/home/mark/docs/Downloads";
+      force = true;
+    };
+    "games" = {
+      source = config.lib.file.mkOutOfStoreSymlink "/home/mark/docs/games";
+      force = true;
+    };
+    "Movies" = {
+      source = config.lib.file.mkOutOfStoreSymlink "/home/mark/docs/Movies";
+      force = true;
+    };
+    "Music" = {
+      source = config.lib.file.mkOutOfStoreSymlink "/home/mark/docs/Music";
+      force = true;
+    };
+    "Pictures" = {
+      source = config.lib.file.mkOutOfStoreSymlink "/home/mark/docs/Pictures";
+      force = true;
+    };
+    "Pictures-Mark" = {
+      source = config.lib.file.mkOutOfStoreSymlink "/home/mark/docs/Pictures-Mark";
+      force = true;
+    };
+    "Projects" = {
+      source = config.lib.file.mkOutOfStoreSymlink "/home/mark/docs/Projects";
+      force = true;
+    };
+    "Public" = {
+      source = config.lib.file.mkOutOfStoreSymlink "/home/mark/docs/Public";
+      force = true;
+    };
+    "SteamLibrary" = {
+      source = config.lib.file.mkOutOfStoreSymlink "/home/mark/docs/SteamLibrary";
+      force = true;
+    };
+    "sync" = {
+      source = config.lib.file.mkOutOfStoreSymlink "/home/mark/docs/sync";
+      force = true;
+    };
+    "Templates" = {
+      source = config.lib.file.mkOutOfStoreSymlink "/home/mark/docs/Templates";
+      force = true;
+    };
+    "Videos" = {
+      source = config.lib.file.mkOutOfStoreSymlink "/home/mark/docs/Videos";
+      force = true;
+    };
+    "vms" = {
+      source = config.lib.file.mkOutOfStoreSymlink "/home/mark/docs/vms";
+      force = true;
+    };
+    "wide-screen-wallpapers" = {
+      source = config.lib.file.mkOutOfStoreSymlink "/home/mark/docs/wide-screen-wallpapers";
+      force = true;
+    };
+    "Working Pictures" = {
+      source = config.lib.file.mkOutOfStoreSymlink "/home/mark/docs/Working Pictures";
+      force = true;
+    };
+  };
+
   programs.git = {
     enable = true;
     settings = {

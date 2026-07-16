@@ -6,11 +6,27 @@ Personal NixOS flake with Home Manager integrated as a NixOS module.
 
 This guide starts from a fresh NixOS install and gets you to a running system using this repo.
 
+### Disk Plan For This Machine
+
+Current intended layout:
+
+1. Install NixOS to `nvme0n1` (CT4000P3PSSD8).
+2. Keep personal files on `nvme2n1` (Btrfs), mounted at `/home/mark/docs`.
+
+Before partitioning in the installer, always verify drive names and models:
+
+```bash
+lsblk -o NAME,MODEL,SIZE,FSTYPE,MOUNTPOINTS
+```
+
+Warning: partitioning/formatting `nvme0n1` will erase that disk.
+
 ### 1. Install Base NixOS
 
 1. Boot the NixOS installer ISO.
-2. Partition, format, and mount disks.
-3. Reboot into the installed system.
+2. Partition, format, and mount disks (target `nvme0n1` for `/` and `/boot`).
+3. Do not format `nvme2n1`; keep it as your Btrfs data drive.
+4. Reboot into the installed system.
 
 ### 2. Prepare the New System
 
@@ -24,7 +40,7 @@ nix-shell -p git
 3. Clone this repo:
 
 ```bash
-git clone https://github.com/<your-user>/<your-repo>.git ~/nixos_configs
+git clone https://github.com/markupstart/nixos_configs.git ~/nixos_configs
 cd ~/nixos_configs
 ```
 
