@@ -226,6 +226,8 @@ let
     pciutils
     smartmontools
     strace
+	swaylock
+	swayidle
     sysstat
     usbutils
     vulkan-tools
