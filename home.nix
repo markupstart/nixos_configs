@@ -96,10 +96,12 @@ let
     obs-studio-plugins.obs-vkcapture
     obs-studio-plugins.wlrobs
     libva-utils
+    makemkv
     v4l-utils
   ];
 
   audioPackages = with pkgs; [
+    asunder
     pulsemixer
     audacity
     cava
