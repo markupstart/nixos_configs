@@ -109,7 +109,7 @@
   services.navidrome = {
     enable = true;
     settings.MusicFolder = "/mnt/audio/music";
-    settings.PlaylistsPath = "/mnt/audio/music/playlists";
+    settings.PlaylistsPath = "/mnt/audio/playlists";
     settings.EnableSharing = true;
 };
 
