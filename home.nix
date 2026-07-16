@@ -98,6 +98,7 @@ let
     libva-utils
     makemkv
     v4l-utils
+    vlc
   ];
 
   audioPackages = with pkgs; [
