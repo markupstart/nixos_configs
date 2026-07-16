@@ -102,6 +102,7 @@ let
 
   audioPackages = with pkgs; [
     asunder
+    lame
     pulsemixer
     audacity
     cava
