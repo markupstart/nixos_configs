@@ -108,8 +108,8 @@
   services.flatpak.enable = true;
   services.navidrome = {
     enable = true;
-    settings.MusicFolder = "/home/mark/docs/Music";
-    settings.PlaylistsPath = "/home/mark/docs/Music/Marks";
+    settings.MusicFolder = "/mnt/audio/music";
+    settings.PlaylistsPath = "/mnt/audio/music/playlists";
     settings.EnableSharing = true;
 };
 
