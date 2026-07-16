@@ -236,6 +236,7 @@ let
     yubikey-touch-detector
     piv-agent
     yubico-piv-tool
+    yubioath-flutter
     fido2-manage
     pam_u2f
     wl-clipboard
