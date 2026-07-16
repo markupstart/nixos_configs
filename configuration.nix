@@ -111,6 +111,7 @@
     settings.MusicFolder = "/mnt/audio/music";
     settings.PlaylistsPath = "/mnt/audio/playlists";
     settings.EnableSharing = true;
+    openFirewall = true;
 };
 
   services.searx = {
