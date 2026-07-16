@@ -107,15 +107,22 @@
   services.udev.enable = true;
   services.flatpak.enable = true;
   services.navidrome = {
-   settings = {
-    Address = "0.0.0.0";
-  };
     enable = true;
-    settings.MusicFolder = "/mnt/audio/music";
-    settings.PlaylistsPath = "/mnt/audio/playlists";
-    settings.EnableSharing = true;
+    settings = {
+      Address = "0.0.0.0";
+      MusicFolder = "/mnt/audio/music";
+      PlaylistsPath = "/mnt/audio/playlists";
+      EnableSharing = true;
+
+      # Keep these first so Navidrome prefers these providers before defaults.
+      Agents = "audiomuseai,apple-music,lastfm,deezer";
+
+      Plugins.Enabled = true;
+      Plugins.Folder = "/var/lib/navidrome/plugins";
+      Plugins.AutoReload = true;
+    };
     openFirewall = true;
-};
+  };
 
   services.searx = {
     enable = true;
