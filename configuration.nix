@@ -106,6 +106,12 @@
 
   services.udev.enable = true;
   services.flatpak.enable = true;
+  services.navidrome = {
+    enable = true;
+    settings.MusicFolder = "/home/mark/Music";
+    settings.PlaylistsPath = "/home/mark/Music/Marks";
+    settings.EnableSharing = true;
+};
 
   services.searx = {
     enable = true;
