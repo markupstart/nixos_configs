@@ -167,6 +167,7 @@ let
     nmap
     socat
     transmission_4-gtk
+    stow
   ];
 
   officePackages = with pkgs; [
