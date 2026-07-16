@@ -203,6 +203,7 @@ let
   systemCategoryPackages = with pkgs; [
     bash-completion
     bat
+    bitwarden-desktop
     bottom
     btop
     dgop
@@ -226,11 +227,18 @@ let
     pciutils
     smartmontools
     strace
-	swaylock
-	swayidle
+    swaylock
+    swayidle
     sysstat
     usbutils
     vulkan-tools
+    yubikey-agent
+    yubikey-manager
+    yubikey-touch-detector
+    piv-agent
+    yubico-piv-tool
+    fido2-manage
+    pam_u2f
     wl-clipboard
     xwayland-satellite
     (lib.lowPrio mesa-demos)
