@@ -25,7 +25,7 @@ stdenv.mkDerivation rec {
     rev = "v${version}";
     # Run: nix build .#obsbot-camera-control --no-link 2>&1 | grep "got:"
     # to get the correct hash, then replace this value.
-    hash = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+    hash = "sha256-Q9Y+TpD0W0CdFYrDNfi5CvF9crViCiSzc+nJUBh6MGI=";
   };
 
   nativeBuildInputs = [

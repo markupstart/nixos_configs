@@ -84,6 +84,7 @@ let
   };
 
   videoPackages = with pkgs; [
+    obsbot-camera-control
     ffmpeg
     gpu-screen-recorder-gtk
     handbrake
