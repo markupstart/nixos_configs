@@ -16,16 +16,31 @@
       home-manager,
       ...
     }@inputs:
+    let
+      system = "x86_64-linux";
+      overlays = [
+        (final: prev: {
+          obsbot-camera-control = final.callPackage ./pkgs/obsbot-camera-control.nix { };
+        })
+      ];
+      pkgs = import nixpkgs { inherit system overlays; };
+    in
     {
+      # Expose the package for direct building:  nix build .#obsbot-camera-control
+      packages.${system}.obsbot-camera-control = pkgs.obsbot-camera-control;
+
       nixosConfigurations = {
         nixos = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
+          inherit system;
 
           #specialArgs = inputs;
           specialArgs = { inherit inputs; };
 
           modules = [
             ./configuration.nix
+
+            # Register the overlay so the custom package is available system-wide
+            { nixpkgs.overlays = overlays; }
 
             # make home-manager as a module of nixos
             # so that home-manager configuration will be deployed automatically when executing `nixos-rebuild switch`
