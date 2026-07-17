@@ -48,6 +48,15 @@ stdenv.mkDerivation rec {
   # CMakeLists.txt has no install() targets; disable the cmake install phase.
   dontUseCmakeInstall = true;
 
+  # CMake sets BUILD_RPATH to /build/source/sdk/lib which would leave a
+  # forbidden /build/ reference in the installed binaries.  Rewrite the RPATH
+  # before the install phase so shrinkRpath and autoPatchelfHook see the
+  # correct store path from the start.
+  postBuild = ''
+    patchelf --set-rpath "$out/lib" ../bin/obsbot-gui
+    patchelf --set-rpath "$out/lib" ../bin/obsbot-cli
+  '';
+
   # Tell autoPatchelfHook to also scan $out/lib so it can satisfy the
   # libdev.so dependency when patching our built binaries.
   preFixup = ''
@@ -79,11 +88,13 @@ stdenv.mkDerivation rec {
     runHook postInstall
   '';
 
-  # After autoPatchelfHook runs, also add $out/lib to the RPATH of the
-  # built binaries so they can find libdev.so at runtime.
+  # wrapQtAppsHook renames the ELF binaries to .obsbot-*-wrapped and creates
+  # shell wrapper scripts in their place.  Ensure the actual ELFs still carry
+  # $out/lib in their RPATH (shrinkRpath may have removed it if libdev.so was
+  # not detected as needed at that point).
   postFixup = ''
-    patchelf --add-rpath "$out/lib" "$out/bin/obsbot-gui"
-    patchelf --add-rpath "$out/lib" "$out/bin/obsbot-cli"
+    patchelf --add-rpath "$out/lib" "$out/bin/.obsbot-gui-wrapped"
+    patchelf --add-rpath "$out/lib" "$out/bin/.obsbot-cli-wrapped"
   '';
 
   meta = with lib; {
