@@ -74,6 +74,13 @@ in
   boot.kernelPackages = pkgs.linuxPackages_latest;
   #boot.kernelPackages = pkgs.linuxPackages_zen;
 
+  # Disable HDA codec power-saving - the main cause of pop/crackle on onboard audio.
+  # power_save=0 keeps the codec clocked at all times; controller_power_save disables
+  # controller-level gating that can also stutter under burst GPU load.
+  boot.extraModprobeConfig = ''
+    options snd_hda_intel power_save=0 power_save_controller=N
+  '';
+
   #AMDGPU
   boot.initrd.kernelModules = [
     "amdgpu"
@@ -363,19 +370,29 @@ in
   services.pipewire.extraConfig.pipewire."92-gaming-stability" = {
     "context.properties" = {
       "default.clock.rate" = 48000;
-      "default.clock.quantum" = 256;
-      "default.clock.min-quantum" = 256;
+      "default.clock.quantum" = 512;
+      "default.clock.min-quantum" = 512;
       "default.clock.max-quantum" = 1024;
     };
   };
 
   services.pipewire.extraConfig.pipewire-pulse."92-gaming-stability" = {
     "pulse.properties" = {
-      "pulse.min.req" = "256/48000";
+      "pulse.min.req" = "512/48000";
       "pulse.default.req" = "512/48000";
       "pulse.max.req" = "1024/48000";
-      "pulse.min.quantum" = "256/48000";
+      "pulse.min.quantum" = "512/48000";
       "pulse.max.quantum" = "1024/48000";
+    };
+  };
+
+  # Give the PipeWire/WirePlumber threads real-time scheduling priority so
+  # the audio thread is not evicted by the game's CPU burst.
+  services.pipewire.wireplumber.extraConfig."80-rt-audio" = {
+    "context.properties" = {
+      "rt.prio" = 88;
+      "rt.time.soft" = 200000;
+      "rt.time.hard" = 200000;
     };
   };
 
