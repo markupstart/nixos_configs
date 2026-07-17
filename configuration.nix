@@ -366,23 +366,23 @@ in
     # use the example session manager (no others are packaged yet so this is enabled by default,
     # no need to redefine it in your config for now)
   };
-  # Keep latency low enough for games, but not so low that it causes xruns/crackle.
+  # Prefer stability over ultra-low latency for heavy games.
   services.pipewire.extraConfig.pipewire."92-gaming-stability" = {
     "context.properties" = {
       "default.clock.rate" = 48000;
-      "default.clock.quantum" = 512;
-      "default.clock.min-quantum" = 512;
-      "default.clock.max-quantum" = 1024;
+      "default.clock.quantum" = 1024;
+      "default.clock.min-quantum" = 1024;
+      "default.clock.max-quantum" = 2048;
     };
   };
 
   services.pipewire.extraConfig.pipewire-pulse."92-gaming-stability" = {
     "pulse.properties" = {
-      "pulse.min.req" = "512/48000";
-      "pulse.default.req" = "512/48000";
-      "pulse.max.req" = "1024/48000";
-      "pulse.min.quantum" = "512/48000";
-      "pulse.max.quantum" = "1024/48000";
+      "pulse.min.req" = "1024/48000";
+      "pulse.default.req" = "1024/48000";
+      "pulse.max.req" = "2048/48000";
+      "pulse.min.quantum" = "1024/48000";
+      "pulse.max.quantum" = "2048/48000";
     };
   };
 
@@ -394,6 +394,25 @@ in
       "rt.time.soft" = 200000;
       "rt.time.hard" = 200000;
     };
+  };
+
+  # Keep ALSA nodes awake so the device does not sleep between bursts.
+  services.pipewire.wireplumber.extraConfig."81-disable-alsa-suspend" = {
+    "monitor.alsa.rules" = [
+      {
+        matches = [
+          {
+            "node.name" = "~alsa_(input|output).*";
+          }
+        ];
+        actions = {
+          update-props = {
+            "session.suspend-timeout-seconds" = 0;
+            "node.pause-on-idle" = false;
+          };
+        };
+      }
+    ];
   };
 
 
