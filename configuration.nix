@@ -352,16 +352,30 @@ in
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    jack.enable = true;
     pulse.enable = true;
     # use the example session manager (no others are packaged yet so this is enabled by default,
     # no need to redefine it in your config for now)
   };
-  services.pipewire.extraConfig.pipewire."92-low-latency" = {
+  # Keep latency low enough for games, but not so low that it causes xruns/crackle.
+  services.pipewire.extraConfig.pipewire."92-gaming-stability" = {
     "context.properties" = {
       "default.clock.rate" = 48000;
-      "default.clock.quantum" = 64;
-      "default.clock.min-quantum" = 64;
-      "default.clock.max-quantum" = 64;
+      "default.clock.quantum" = 256;
+      "default.clock.min-quantum" = 256;
+      "default.clock.max-quantum" = 1024;
+    };
+  };
+
+  services.pipewire.extraConfig.pipewire-pulse."92-gaming-stability" = {
+    "pulse.properties" = {
+      "pulse.min.req" = "256/48000";
+      "pulse.default.req" = "512/48000";
+      "pulse.max.req" = "1024/48000";
+      "pulse.min.quantum" = "256/48000";
+      "pulse.max.quantum" = "1024/48000";
     };
   };
 
