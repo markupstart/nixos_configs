@@ -111,6 +111,29 @@ in
     ];
   };
 
+  # Media drive mounted separately from the system disk.
+  fileSystems."/home/mark/media" = {
+    device = "/dev/disk/by-uuid/85d0fac3-619c-4504-95ec-fb00ead832a9";
+    fsType = "ext4";
+    options = [
+      "nofail"
+      "x-systemd.automount"
+      "x-systemd.device-timeout=10s"
+    ];
+  };
+
+  # Backups drive mounted separately from the system disk.
+  fileSystems."/home/mark/backups" = {
+    device = "/dev/disk/by-uuid/009e34d5-12b2-4976-9e64-a223e0b37152";
+    fsType = "btrfs";
+    options = [
+      "nofail"
+      "compress=zstd:3"
+      "x-systemd.automount"
+      "x-systemd.device-timeout=10s"
+    ];
+  };
+
   virtualisation.containers.enable = true;
 
   services.udev.packages = [
