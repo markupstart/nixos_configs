@@ -550,9 +550,10 @@ in
       ${pkgs.coreutils}/bin/chmod 0640 "$secret_file"
     fi
 
-    if [ ! -s "$nonce_file" ]; then
+    # nginx includes this file, so it must contain a directive.
+    if [ ! -s "$nonce_file" ] || ! ${pkgs.gnugrep}/bin/grep -Eq '^set \$secure_link_secret [A-Fa-f0-9]+;$' "$nonce_file"; then
       nonce="$(${pkgs.openssl}/bin/openssl rand -hex 16)"
-      ${pkgs.coreutils}/bin/printf '%s\n' "$nonce" > "$nonce_file"
+      ${pkgs.coreutils}/bin/printf 'set $secure_link_secret %s;\n' "$nonce" > "$nonce_file"
       ${pkgs.coreutils}/bin/chown onlyoffice:onlyoffice "$nonce_file"
       ${pkgs.coreutils}/bin/chmod 0640 "$nonce_file"
     fi
