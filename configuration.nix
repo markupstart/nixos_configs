@@ -558,6 +558,20 @@ in
     fi
   '';
 
+  system.activationScripts.nextcloud-admin-pass = ''
+    secret_dir="/var/lib/nextcloud"
+    secret_file="$secret_dir/admin-pass"
+
+    ${pkgs.coreutils}/bin/install -d -m 0750 -o nextcloud -g nextcloud "$secret_dir"
+
+    if [ ! -s "$secret_file" ]; then
+      secret="$(${pkgs.openssl}/bin/openssl rand -base64 24 | ${pkgs.coreutils}/bin/tr -dc 'A-Za-z0-9' | ${pkgs.coreutils}/bin/head -c 20)"
+      ${pkgs.coreutils}/bin/printf '%s\n' "$secret" > "$secret_file"
+      ${pkgs.coreutils}/bin/chown nextcloud:nextcloud "$secret_file"
+      ${pkgs.coreutils}/bin/chmod 0600 "$secret_file"
+    fi
+  '';
+
   system.activationScripts.searxng-secret = ''
     secret_file="/var/lib/searx/searxng.env"
 
