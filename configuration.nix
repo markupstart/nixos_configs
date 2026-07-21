@@ -638,6 +638,8 @@ in
 
       "$OCC_BIN" app:enable onlyoffice
       "$OCC_BIN" config:app:set onlyoffice DocumentServerUrl --value="https://onlyoffice.hallscloud.org"
+      "$OCC_BIN" config:app:set onlyoffice DocumentServerInternalUrl --value="https://onlyoffice.hallscloud.org"
+      "$OCC_BIN" config:app:set onlyoffice StorageUrl --value="https://nextcloud.hallscloud.org"
       "$OCC_BIN" config:app:set onlyoffice jwt_secret --value="$JWT_SECRET"
     '';
   };
