@@ -179,7 +179,7 @@ let
   officePackages = with pkgs; [
     libreoffice-fresh
     mousepad
-    owncloud-client
+    nextcloud-client
     papers
     thunderbird
   ];

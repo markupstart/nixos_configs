@@ -550,10 +550,10 @@ in
       ${pkgs.coreutils}/bin/chmod 0640 "$secret_file"
     fi
 
-    # ONLYOFFICE prestart expects a raw hex token in this file.
-    if [ ! -s "$nonce_file" ] || ! ${pkgs.gnugrep}/bin/grep -Eq '^[A-Fa-f0-9]+$' "$nonce_file"; then
+    # Keep quoted syntax; ONLYOFFICE prestart extracts secret via cut -d '"' -f 2.
+    if [ ! -s "$nonce_file" ] || ! ${pkgs.gnugrep}/bin/grep -Eq '^set \$secure_link_secret "[A-Fa-f0-9]+";$' "$nonce_file"; then
       nonce="$(${pkgs.openssl}/bin/openssl rand -hex 16)"
-      ${pkgs.coreutils}/bin/printf '%s\n' "$nonce" > "$nonce_file"
+      ${pkgs.coreutils}/bin/printf 'set $secure_link_secret "%s";\n' "$nonce" > "$nonce_file"
       ${pkgs.coreutils}/bin/chown onlyoffice:onlyoffice "$nonce_file"
       ${pkgs.coreutils}/bin/chmod 0640 "$nonce_file"
     fi
