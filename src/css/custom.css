@@ -1,0 +1,69 @@
+:root {
+    --ifm-color-primary: #0f766e;
+    --ifm-color-primary-dark: #115e59;
+    --ifm-color-primary-darker: #134e4a;
+    --ifm-color-primary-darkest: #0f3f3b;
+    --ifm-color-primary-light: #0d9488;
+    --ifm-color-primary-lighter: #14b8a6;
+    --ifm-color-primary-lightest: #2dd4bf;
+    --ifm-font-color-base: #102a43;
+    --ifm-background-color: #f6f4ef;
+    --ifm-navbar-background-color: rgba(246, 244, 239, 0.92);
+}
+
+html {
+    background:
+        radial-gradient(circle at top left, rgba(15, 118, 110, 0.12), transparent 30%),
+        linear-gradient(180deg, #fbfaf7 0%, #f6f4ef 100%);
+}
+
+.home-shell {
+    min-height: calc(100vh - var(--ifm-navbar-height));
+    display: grid;
+    place-items: center;
+    padding: 4rem 1.5rem;
+}
+
+.hero-card {
+    width: min(960px, 100%);
+    padding: 4rem;
+    border-radius: 28px;
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid rgba(16, 42, 67, 0.08);
+    box-shadow: 0 24px 60px rgba(16, 42, 67, 0.08);
+    backdrop-filter: blur(12px);
+}
+
+.eyebrow {
+    margin: 0 0 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 0.8rem;
+    color: var(--ifm-color-primary-darkest);
+}
+
+.hero-card h1 {
+    font-size: clamp(2.75rem, 6vw, 5.25rem);
+    line-height: 0.96;
+    margin-bottom: 1rem;
+}
+
+.hero-copy {
+    max-width: 42rem;
+    font-size: 1.15rem;
+    line-height: 1.7;
+    color: #425466;
+    margin-bottom: 2rem;
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem;
+}
+
+.button--secondary {
+    background: transparent;
+    border: 1px solid rgba(16, 42, 67, 0.18);
+    color: var(--ifm-font-color-base);
+}

@@ -1,0 +1,29 @@
+{
+    "name": "hallscloud-handbook",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "start": "docusaurus start",
+        "build": "docusaurus build",
+        "swizzle": "docusaurus swizzle",
+        "clear": "docusaurus clear",
+        "serve": "docusaurus serve"
+    },
+    "dependencies": {
+        "@docusaurus/core": "^3.10.2",
+        "@docusaurus/preset-classic": "^3.10.2",
+        "clsx": "^2.1.1",
+        "prism-react-renderer": "^2.4.1",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1"
+    },
+    "devDependencies": {
+        "@docusaurus/module-type-aliases": "^3.10.2",
+        "@types/react": "^18.3.23",
+        "@types/react-dom": "^18.3.7",
+        "typescript": "^5.8.3"
+    },
+    "engines": {
+        "node": ">=18.0"
+    }
+}
