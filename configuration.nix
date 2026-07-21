@@ -1,4 +1,4 @@
- # Edit this configuration file to define what should be installed on
+# Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
@@ -12,10 +12,12 @@
 let
   audiomuseaiPlugin = pkgs.runCommand "audiomuseai" { } ''
     install -Dm444 \
-      ${pkgs.fetchurl {
-        url = "https://github.com/NeptuneHub/AudioMuse-AI-NV-plugin/releases/latest/download/audiomuseai.ndp";
-        hash = "sha256-hOanUJBKgsW+p2gZgHEhN64lS0oUlsu8mXTaseSzndg=";
-      }} \
+      ${
+        pkgs.fetchurl {
+          url = "https://github.com/NeptuneHub/AudioMuse-AI-NV-plugin/releases/latest/download/audiomuseai.ndp";
+          hash = "sha256-hOanUJBKgsW+p2gZgHEhN64lS0oUlsu8mXTaseSzndg=";
+        }
+      } \
       "$out/share/audiomuseai.ndp"
   '';
 in
@@ -68,7 +70,7 @@ in
   };
 
   #yubikey
-   services.pcscd.enable = true;
+  services.pcscd.enable = true;
 
   #Kernel to Boot
   boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -127,11 +129,13 @@ in
     enable = true;
     plugins = [
       pkgs.navidromePlugins.apple-music
-      (audiomuseaiPlugin
+      (
+        audiomuseaiPlugin
         // {
           isNavidromePlugin = true;
           pname = "audiomuseai";
-        })
+        }
+      )
     ];
     settings = {
       Address = "0.0.0.0";
@@ -218,6 +222,68 @@ in
     };
   };
 
+  # Nextcloud (NixOS-native stack: nginx + ACME + PostgreSQL + Redis)
+  services.nextcloud = {
+    enable = true;
+    hostName = "nextcloud.hallscloud.org";
+    https = true;
+    database.createLocally = true;
+    configureRedis = true;
+    maxUploadSize = "8G";
+    autoUpdateApps.enable = true;
+    extraAppsEnable = true;
+    extraApps = with config.services.nextcloud.package.packages.apps; {
+      inherit onlyoffice;
+    };
+
+    config = {
+      dbtype = "pgsql";
+      adminuser = "mark";
+      adminpassFile = "/var/lib/nextcloud/admin-pass";
+    };
+
+    settings = {
+      trusted_domains = [ "nextcloud.hallscloud.org" ];
+      trusted_proxies = [
+        "127.0.0.1"
+        "::1"
+      ];
+      overwriteprotocol = "https";
+      default_phone_region = "US";
+      maintenance_window_start = 1;
+    };
+  };
+
+  services.nginx = {
+    enable = true;
+    recommendedTlsSettings = true;
+    recommendedOptimisation = true;
+    recommendedGzipSettings = true;
+    recommendedProxySettings = true;
+
+    virtualHosts."nextcloud.hallscloud.org" = {
+      forceSSL = true;
+      enableACME = true;
+    };
+
+    virtualHosts."onlyoffice.hallscloud.org" = {
+      forceSSL = true;
+      enableACME = true;
+    };
+  };
+
+  services.onlyoffice = {
+    enable = true;
+    hostname = "onlyoffice.hallscloud.org";
+    jwtSecretFile = "/var/lib/onlyoffice/jwt-secret";
+    securityNonceFile = "/var/lib/onlyoffice/security-nonce";
+  };
+
+  security.acme = {
+    acceptTerms = true;
+    defaults.email = "webmaster@hallscloud.org";
+  };
+
   services.ollama = {
     enable = true;
     package = pkgs.ollama-rocm;
@@ -258,6 +324,8 @@ in
 
   networking.firewall = {
     allowedTCPPorts = [
+      80
+      443
       8096
       8920
       9200
@@ -415,7 +483,6 @@ in
     ];
   };
 
-
   #user account
   users.users.mark = {
     isNormalUser = true;
@@ -469,6 +536,28 @@ in
   hardware.graphics.enable32Bit = true; # For 32 bit applications
 
   #HIP corrections
+  system.activationScripts.onlyoffice-jwt-secret = ''
+    secret_dir="/var/lib/onlyoffice"
+    secret_file="$secret_dir/jwt-secret"
+    nonce_file="$secret_dir/security-nonce"
+
+    ${pkgs.coreutils}/bin/install -d -m 0750 -o onlyoffice -g onlyoffice "$secret_dir"
+
+    if [ ! -s "$secret_file" ]; then
+      secret="$(${pkgs.openssl}/bin/openssl rand -hex 32)"
+      ${pkgs.coreutils}/bin/printf '%s\n' "$secret" > "$secret_file"
+      ${pkgs.coreutils}/bin/chown onlyoffice:onlyoffice "$secret_file"
+      ${pkgs.coreutils}/bin/chmod 0640 "$secret_file"
+    fi
+
+    if [ ! -s "$nonce_file" ]; then
+      nonce="$(${pkgs.openssl}/bin/openssl rand -hex 16)"
+      ${pkgs.coreutils}/bin/printf '%s\n' "$nonce" > "$nonce_file"
+      ${pkgs.coreutils}/bin/chown onlyoffice:onlyoffice "$nonce_file"
+      ${pkgs.coreutils}/bin/chmod 0640 "$nonce_file"
+    fi
+  '';
+
   system.activationScripts.searxng-secret = ''
     secret_file="/var/lib/searx/searxng.env"
 
@@ -514,6 +603,29 @@ in
           --admin-password "$admin_pw"
     fi
   '';
+
+  # Declarative ONLYOFFICE app wiring inside Nextcloud.
+  systemd.services.nextcloud-onlyoffice-config = {
+    description = "Configure Nextcloud ONLYOFFICE app";
+    wantedBy = [ "multi-user.target" ];
+    after = [
+      "nextcloud-setup.service"
+      "onlyoffice-converter.service"
+    ];
+    requires = [ "nextcloud-setup.service" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+    };
+    script = ''
+      OCC_BIN="${config.services.nextcloud.occ}/bin/nextcloud-occ"
+      JWT_SECRET="$(${pkgs.coreutils}/bin/cat /var/lib/onlyoffice/jwt-secret)"
+
+      "$OCC_BIN" app:enable onlyoffice
+      "$OCC_BIN" config:app:set onlyoffice DocumentServerUrl --value="https://onlyoffice.hallscloud.org"
+      "$OCC_BIN" config:app:set onlyoffice jwt_secret --value="$JWT_SECRET"
+    '';
+  };
 
   systemd.tmpfiles.rules = [
     "L+    /opt/rocm/hip   -    -    -     -    ${pkgs.rocmPackages.clr}"
