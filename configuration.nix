@@ -188,15 +188,77 @@ in
         instance_name = "Mark SearXNG";
       };
 
+      search = {
+        # Avoid extra hidden requests that can quickly trigger anti-bot systems.
+        autocomplete = "";
+      };
+
       server = {
         bind_address = "0.0.0.0";
         port = 8888;
         secret_key = "$SEARXNG_SECRET";
-        limiter = false;
+        limiter = true;
         public_instance = false;
         image_proxy = true;
         method = "GET";
       };
+
+      # Keep a stable explicit web engine set instead of relying on defaults,
+      # which often ship many engines disabled.
+      engines = [
+        {
+          name = "bing";
+          disabled = false;
+        }
+        {
+          name = "brave";
+          disabled = false;
+        }
+        {
+          name = "duckduckgo";
+          disabled = false;
+        }
+        {
+          name = "startpage";
+          disabled = true;
+        }
+        {
+          name = "google";
+          disabled = false;
+        }
+        {
+          name = "mojeek";
+          disabled = false;
+        }
+        {
+          name = "presearch";
+          disabled = false;
+        }
+        {
+          name = "presearch videos";
+          disabled = false;
+        }
+        {
+          name = "qwant";
+          disabled = false;
+        }
+        {
+          name = "wiby";
+          disabled = false;
+        }
+        {
+          name = "yahoo";
+          disabled = false;
+        }
+        {
+          name = "seznam";
+          disabled = false;
+        }
+        {
+          name = "naver";
+          disabled = false;
+        }
+      ];
     };
 
     # Keep bot protection on, but whitelist local ranges to avoid home/LAN lockouts.
